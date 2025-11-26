@@ -1,34 +1,40 @@
-= AdminFaces Starter project
+# Gestión de Trámites – Proyecto de Diseño 2024
 
+Este proyecto forma parte del desarrollo de un sistema orientado a la **gestión y seguimiento de trámites**, permitiendo organizar, registrar y administrar distintas etapas del proceso de forma eficiente.
 
-A simple project to get you started with https://github.com/adminfaces[AdminFaces^].
+## Descripción General
 
-.Login page
-image:starter1.png[link="https://github.com/adminfaces/admin-starter/blob/master/starter1.png"]
+El sistema está diseñado para facilitar el manejo de trámites dentro de una organización, brindando herramientas para:
 
-.Car list
-image:starter2.png[link="https://raw.githubusercontent.com/adminfaces/admin-starter/master/starter2.png"]
+- Registrar nuevos trámites.
+- Administrar estados y transiciones.
+- Gestionar usuarios y roles.
+- Visualizar información relevante de forma clara e intuitiva.
+- Mantener la trazabilidad de cada proceso.
 
-.Car form
-image:starter3.png[link="https://raw.githubusercontent.com/adminfaces/admin-starter/master/starter3.png"]
+El objetivo del proyecto es ofrecer una solución modular, escalable y fácil de mantener, que permita mejorar el flujo de trabajo y la eficiencia operativa.
 
-.Car form responsive
-image:starter4.png[link="https://raw.githubusercontent.com/adminfaces/admin-starter/master/starter4.png"]
+## Tecnologías utilizadas
 
-== Running
+- **Java / Spring Boot** (si corresponde)
+- **React / HTML / CSS / Bootstrap** (si corresponde)
+- **MySQL / PostgreSQL** (indicar base de datos)
+- **Git / GitHub**
 
-It should run in any JavaEE 6 or greater application server.
+## Estado del proyecto
 
-You can also run via wildfly-swarm with command `mvn wildfly-swarm:run -Pswarm`.
+Proyecto en desarrollo.  
+Se continúan incorporando funcionalidades y mejoras.
 
-Or using docker:
+## Estructura del repositorio
 
-----
-docker run -it -p 8080:8080 rmpestano/admin-starter
-----
+- `/src` → Código fuente del proyecto  
+- `/resources` → Archivos de configuración, scripts, templates  
+- Documentación y material adicional
 
-The application is available at http://localhost:8080/admin-starter
+## Autores
 
-== Demo
+Proyecto desarrollado por el equipo de trabajo Los Imaginadores de Diseño.
 
-A live demo is available on https://adminfaces.github.io/admin-starter/[Openshift here^]
+---
+
