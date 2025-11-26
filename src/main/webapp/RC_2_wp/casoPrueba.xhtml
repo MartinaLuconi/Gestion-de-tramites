@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+    <ui:define name="metadata">
+        <f:metadata>
+
+        </f:metadata>
+        <ui:param name="renderFormAsterisks" value="true"/>
+    </ui:define>
+    
+    <ui:define name="title">
+        Cambiar Estado
+    </ui:define>
+    <ui:define name="body">
+        
+        <h:form id="form" prependId="false" >
+        <div class="card" align="center" >
+           <p:dataViewGridItem>  
+             <h:panelGrid id="tramiteDet" style="margin: 30px" cellpadding="30">
+             <h:outputText value="Nombre TipoTramite:" />
+            <h:outputText value="#{uiNuevoEstadoCP.nombreTipoTramite}"/> 
+            
+             <h:outputText value="Tramite nro:" />
+             <h:outputText value="#{uiNuevoEstadoCP.nroTramite}"/> 
+             
+              <h:outputText value="Cliente:" />
+              <h:outputText value="#{uiNuevoEstadoCP.nombreApellidoCliente}"/> 
+                 
+            <h:outputText value="Estado actual:" />
+            <h:outputText value="#{uiNuevoEstadoCP.nombreEstadoTramiteActual}"/> 
+            
+             </h:panelGrid>
+           </p:dataViewGridItem>
+            
+            <h:outputText value="Seleccione próximo estado" />
+            
+       
+            
+            <p:selectOneRadio id="estadoNuevo" value="#{uiNuevoEstadoCP.codEstadoSeleccionado}" layout="grid" columns="3" styleClass="grid-radio">
+                <f:selectItems value="#{uiNuevoEstadoCP.estadosPosibles()}" var="estado" itemLabel="#{estado.nombreEstadoTramiteDestino}" itemValue="#{estado.codEstadoTramite}"/>
+           </p:selectOneRadio>
+            <h:outputText value="Observaciones" />
+            
+            <div>
+                <p:inputTextarea rows="6" cols="90" value="#{uiNuevoEstadoCP.observacionTramiteEstado}" />
+             
+            </div>
+            
+            <!-- botones de GUARDAR Y CANCELAR -->
+            <p:toolbar>
+            <p:toolbarGroup align="right">
+            <div class="box-header with-border" >
+                <div id="main-buttons">
+                    <p:commandButton value="Guardar Cambio" action="#{uiNuevoEstadoCP.cambiarEstadoTramite()}"  styleClass="rounded-button btn-primary"/>
+                 </div>
+            </div>
+            
+            <div class="box-header with-border" >
+                <div id="main-buttons" >
+                    <p:commandButton value="Cancelar" action="#{uiNuevoEstadoCP.irCancelar()}" styleClass="rounded-button btn-primary" />
+                 </div>
+            </div>
+            </p:toolbarGroup>
+             </p:toolbar>
+        </div>
+       
+    </h:form>
+
+    </ui:define>
+
+    </ui:composition >
+

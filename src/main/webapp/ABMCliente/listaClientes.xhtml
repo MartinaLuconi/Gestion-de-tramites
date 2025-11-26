@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+    <ui:define name="metadata">
+        <ui:param name="title" value="Lista de Clientes"/> <!-- Automatic create breadCrumb and page title when param 'title' is provided. --> 
+        
+   <style type="text/css">
+            .ui-datatable .ui-datatable-header {
+                text-align: right !important;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="description">
+        Lista de Clientes
+    </ui:define>
+
+    <ui:define name="body">
+    <h:form>
+        <p:focus context="@form"/>
+        <!-- BOTÓN PARA AGREGAR CLIENTE -->
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <div id="main-buttons">
+                    <p:commandButton value="Agregar Cliente" icon="fa fa-plus" action="#{uiListaClientes.irAgregarCliente()}" styleClass="btn-primary"/>
+                </div>
+            </div>
+                
+         <p:separator/> 
+         <!-- FILTRO SEGÚN CUIT -->
+         <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-6">
+               <p:outputPanel>
+                   <h:outputText value="CUIT:"/>
+                   <p:spacer height="10"/>
+                   <p:inputText id="cuitFilter" style="width:150px" value="#{uiListaClientes.cuitClienteFiltro}">
+                       <p:ajax event="keyup" listener="#{uiListaClientes.filtrar()}" update="@form:grid1"/>
+                   </p:inputText>
+               </p:outputPanel>
+            </div>
+             
+             <!-- FILTRO POR NOMBRE -->
+              <div class="ui-g-12 ui-md-6">
+                    <p:outputPanel>
+                        <h:outputText value="Nombre y Apellido:"/>
+                        <p:spacer height="10"/>
+                        <p:inputText id="nombreFilter" style="width:150px" value="#{uiListaClientes.nombreApellidoClienteFiltro}">
+                            <p:ajax event="keyup" listener="#{uiListaClientes.filtrar()}" update="@form:grid1"/>
+                        </p:inputText>
+                    </p:outputPanel>
+                </div>
+         </div>
+
+                    
+        <!-- Tabla para mostrar la lista de Clientes -->
+            <p:spacer height="5"/>
+ 
+            <p:dataTable id="grid1" widgetVar="ListaClientesTable" value="#{uiListaClientes.obtenerListaCliente()}" var="listaClientes" >
+
+                <p:column>
+                    <f:facet name="header">CUIT</f:facet>
+                    #{listaClientes.cuitCliente}
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">Apellido y Nombre</f:facet>
+                    #{listaClientes.nombreApellidoCliente}
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">Fecha Baja</f:facet>
+                    #{listaClientes.fechaHoraBajaCliente}
+                </p:column>
+
+            <!-- Colocamos los botones de Modificar y Eliminar -->              
+                <p:column>
+                    <f:facet name="header">Acciones</f:facet>
+                    <p:commandButton icon= "pi pi-user-edit" value="Modificar" styleClass="btn-info" action="#{uiListaClientes.irModificarCliente(listaClientes.cuitCliente)}"  disabled="#{listaClientes.fechaHoraBajaCliente != null}"> 
+                        <f:ajax render="@form"/>
+                    </p:commandButton>
+                    
+                   <p:spacer width="5"/>
+                    <p:commandButton value="Eliminar" styleClass="btn-danger" update="@form" actionListener="#{uiListaClientes.eliminarCliente(listaClientes.cuitCliente)}">
+                        <p:confirm header="ELIMINAR CLIENTE" 
+                                     message="#{uiListaClientes.confirmMessage(listaClientes.nombreApellidoCliente, listaClientes.cuitCliente)}"  
+                                     icon="ui-icon-alert" 
+                                     escape="false"/>
+                    </p:commandButton>
+                <!-- tercera -->
+                       
+                   
+                
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" styleClass="box-solid box-danger">
+                        <p:commandButton value="Si" type="button" styleClass="btn-material btn-primary ui-confirmdialog-yes"
+                                         icon="fa fa-check" update="@form:grid1"/>
+                        <p:commandButton value="No" type="button" styleClass="btn-material btn-danger ui-confirmdialog-no"
+                                         icon="fa fa-close" update="@form:grid1"/>
+                    </p:confirmDialog>
+                </p:column>
+               
+      <!--  <p:column> 
+                   
+                    <p:commandButton icon="pi pi-search" styleClass="btn-info" action="{uiListaClientes.irACliente(listaClientes.cuitCliente)}">
+                    
+                     </p:commandButton>
+            </p:column>
+                             --> 
+                
+          </p:dataTable>
+        </div>
+
+    </h:form>
+    </ui:define>
+</ui:composition>

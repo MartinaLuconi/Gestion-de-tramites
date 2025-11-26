@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+    <ui:define name="metadata">
+        <f:metadata></f:metadata>
+        <ui:param name="renderFormAsterisks" value="true"/>
+    </ui:define>
+
+    <ui:define name="title">
+        #{uiabmConsultor.insert ? 'Agregar Consultor' : 'Modificar Consultor'}
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form id="form" prependId="false">
+            <p:panel styleClass="box-primary card">
+                <div class="ui-g ui-fluid">
+                    <!-- Campo de entrada para el legajo del consultor (visible solo en modo de modificación) -->
+                    <ui:fragment rendered="#{!uiabmConsultor.insert}">
+                        <div class="ui-sm-12 ui-g-6 ui-g-nopad">
+                            <div class="ui-sm-12 ui-g-11">
+                                <p:outputLabel for="legajoConsultor" value="Legajo:" />
+                            </div>
+                            <div class="ui-sm-12 ui-g-11">
+                                <p:inputText id="legajoConsultor" value="#{uiabmConsultor.legajoConsultor}" style="width: 150px;" disabled="true" />
+                            </div>
+                        </div>
+                    </ui:fragment>
+                    
+                    <!-- Campo de entrada para el nombre del consultor -->
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel for="nombreApellidoConsultor" value="Nombre y Apellido:" />
+                        </div>
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:inputText id="nombreApellidoConsultor" value="#{uiabmConsultor.nombreApellidoConsultor}" style="width: 150px;"/>
+                            <p:message id="nombreApellidoConsultorMSG" for="nombreApellidoConsultor"/>
+                        </div>
+                    </div>
+                    
+                    <!-- Campo de entrada para el mail del consultor -->
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel for="usuario" value="Mail:" />
+                        </div>
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:inputText id="usuario" value="#{uiabmConsultor.usuario}" style="width: 270px;"/>
+                            <p:message id="usuarioMSG" for="usuario"/>
+                        </div>
+                    </div>
+                    
+                    <!-- Campo de entrada para el número máximo de trámites -->
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel for="consultorNroMaxTramite" value="Trámites Asignados:"/>
+                        </div>
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:inputText id="consultorNroMaxTramite" value="#{uiabmConsultor.consultorNroMaxTramite}"  style="width: 80px;" />
+                            <p:message id="consultorNroMaxTramiteMSG" for="consultorNroMaxTramite"/>
+                        </div>
+                    </div>
+
+                    <!-- Contenedor para los botones, Agregar/Modificar y Volver -->
+                    <div class="ui-sm-12 ui-g-12 ui-g-nopad" style="text-align:left; margin-top: 20px;">
+                    <div class="ui-sm-12" style="display: flex; gap: 10px; justify-content: flex-start;">
+                    <!-- Botón para agregar o modificar consultor -->
+                    <p:commandButton value="#{uiabmConsultor.insert ? 'Agregar' : 'Modificar'}"
+                                     action="#{uiabmConsultor.agregarModificarConsultor()}" 
+                                     icon="fa fa-check" styleClass="btn-primary"
+                                     style="width: 100px; padding: 4px;" />
+                    <!-- Botón para volver a la lista de consultores -->
+                    <p:commandButton value="Volver" 
+                                     action="#{uiabmConsultor.volverALista}" 
+                                     icon="fa fa-arrow-left" styleClass="btn-secondary"
+                                     style="width: 100px; padding: 4px;" />
+                    </div>
+                    </div>
+                </div>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

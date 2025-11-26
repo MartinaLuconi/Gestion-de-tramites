@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="entidades.CategoriaTramite" table="categoriaTramite">
+
+        <id name="OID" type="string">
+            <column name="OIDCategoriaTramite"/>
+            <generator class="uuid2"/>
+        </id>
+
+        <property name="codCategoriaTramite" type="int">
+            <column name="codCategoriaTramite"/>
+        </property>
+
+        <property name="nombreCategoriaTramite" type="string">
+            <column name="nombreCategoriaTramite"/>
+        </property>
+        
+        <property name="fechaHoraBajaCategoriaTramite" column="fechaHoraBajaCategoriaTramite" type="timestamp"/>
+     
+    </class>
+    
+</hibernate-mapping>

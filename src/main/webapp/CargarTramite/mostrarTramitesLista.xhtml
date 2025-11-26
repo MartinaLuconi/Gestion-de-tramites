@@ -1,0 +1,182 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" 
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" 
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+    <ui:define name="metadata">
+        <ui:param name="title" value="Trabajar con Estado"/>
+        <style type="text/css">
+            .ui-datatable .ui-datatable-header {
+                text-align: right !important;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="description">
+        <h1>Trámites</h1>
+    </ui:define>
+
+    <p:separator/>
+
+    <ui:define name="body">
+        <!-- Formulario principal -->
+        <h:form id="tramiteForm">
+            <p:focus context="@form"/>
+            
+            <!-- Panel de filtros -->
+            <div class="box box-primary">
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-md-6"> 
+                        <p:outputPanel>
+                            <h:outputText value="Fecha Desde: "/>
+                            <p:calendar id="fechaDesdeFiltro" style="width:150px"  
+                                        value="#{uimostrarTramitesLista.fechaDesdeFiltro}" 
+                                        pattern="dd/MM/yyyy" required="true"
+                                        navigator="true"
+                                        autocomplete="off">
+                                <p:ajax event="dateSelect" listener="#{uimostrarTramitesLista.filtrar()}" update="grid1"/>
+                            </p:calendar>
+                        </p:outputPanel>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-6">
+                        <p:outputPanel>
+                            <h:outputLabel for="cuitFiltro" value="Número de CUIT: "/>
+                            <p:inputText id="cuitFiltro" style="width:100px"  
+                                         value="#{uimostrarTramitesLista.cuitFiltro}"
+                                         autocomplete="off">
+                                <p:ajax event="keyup" delay="1000" listener="#{uimostrarTramitesLista.filtrar()}" update="grid1"/>
+                            </p:inputText>
+                        </p:outputPanel>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-6">
+                        <p:outputPanel>
+                            <h:outputText value="Número de Tramite: "/>
+                            <p:inputText id="nroTramiteFiltro" style="width:150px"  
+                                         value="#{uimostrarTramitesLista.nroTramiteFiltro}"
+                                         autocomplete="off">
+                                <p:ajax event="keyup" listener="#{uimostrarTramitesLista.filtrar()}" update="grid1"/>
+                            </p:inputText>
+                        </p:outputPanel>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-6">
+                        <p:outputPanel>
+                            <h:outputText value="Nombre del Estado: "/>
+                            <p:inputText id="estadoFiltro" style="width:150px"  
+                                         value="#{uimostrarTramitesLista.estadoFiltro}"
+                                         autocomplete="off">
+                                <p:ajax event="keyup" delay="500" listener="#{uimostrarTramitesLista.filtrar()}" update="grid1"/>
+                            </p:inputText>
+                        </p:outputPanel>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-6">
+                        <p:outputPanel>
+                            <h:outputText value="Legajo Consultor: "/>
+                            <p:inputText id="consultorFiltro" style="width:150px"  
+                                         value="#{uimostrarTramitesLista.consultorFiltro}"
+                                         autocomplete="off">
+                                <p:ajax event="keyup" delay="500" listener="#{uimostrarTramitesLista.filtrar()}" update="grid1"/>
+                            </p:inputText>
+                        </p:outputPanel>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-6">
+                        <p:outputPanel>
+                            <h:outputText value="Código del Tipo de Trámite: "/>
+                            <p:inputText id="codigoTTFiltro" style="width:150px"  
+                                         value="#{uimostrarTramitesLista.codigoTTFiltro}"
+                                         autocomplete="off">
+                                <p:ajax event="keyup" delay="500" listener="#{uimostrarTramitesLista.filtrar()}" update="grid1"/>
+                            </p:inputText>
+                        </p:outputPanel>
+                    </div>
+                </div>
+
+                <p:separator/>
+                
+                <!-- Tabla de trámites -->
+                <p:dataTable id="grid1" widgetVar="tramiteTable" 
+                             value="#{uimostrarTramitesLista.mostrarTramites()}" var="tramite">
+                    <p:column>
+                        <f:facet name="header">Número de Trámite</f:facet>
+                        #{tramite.nroTramite}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">Fecha y Hora Carga</f:facet>
+                        <h:outputText value="#{tramite.fechaCargaTramite}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">Tipo de Trámite</f:facet>
+                        #{tramite.nombreTipoTramite}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">Estado del Trámite</f:facet>
+                        #{tramite.nombreEstadoTramite}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">Cliente</f:facet>
+                        #{tramite.nombreCliente}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">CUIT del Cliente</f:facet>
+                        #{tramite.CUITCliente}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">Consultor</f:facet>
+                        #{tramite.nombreConsultor}
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">Documentación</f:facet>
+                        #{tramite.estadoDocumentacion} 
+                    </p:column>
+
+                    <!-- Columna de acciones -->
+                    <p:column>
+                        <f:facet name="header">Acciones</f:facet>
+                        <p:commandButton styleClass="btn-danger" value="Anular" 
+                                         actionListener="#{uimostrarTramitesLista.anularTramite(tramite.nroTramite)}" 
+                                         disabled="#{tramite.fechaHoraBajaTramite!= null}"
+                                         process="@this"
+                                         update="@form:grid1">
+                            <!-- Diálogo de confirmación para la baja -->
+                            <p:confirm header="Anulación del trámite número: #{tramite.nroTramite}" 
+                                       message="¿Está seguro de dar de baja el documento #{tramite.nombreTipoTramite}?" 
+                                       icon="ui-icon-alert"/>
+                        </p:commandButton>
+
+                        <p:commandButton icon="pi pi-search" title="Visualizar"
+                                         action="#{uimostrarTramitesLista.irVisualizarTramite(tramite.nroTramite)}"
+                                         process="@this"
+                                         update="@none">
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+                
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" styleClass="box-solid box-danger">
+                    <p:commandButton value="Si" type="button" styleClass="btn-material btn-primary ui-confirmdialog-yes" 
+                                     icon="fa fa-check" update="@form:grid"/>
+                    <p:commandButton value="No" type="button" styleClass="btn-material btn-danger ui-confirmdialog-no" 
+                                     icon="fa fa-close" update="@form:grid"/>
+                </p:confirmDialog>
+            </div>
+            
+            <div class="ui-sm-12 ui-g-6 ui-g-nopad">
+                <div class="ui-sm-12 ui-g-4">
+                    <p:commandButton value="Cargar Trámite"  
+                                     action="#{uimostrarTramitesLista.irBotonCargar()}" 
+                                     icon="fa fa-check"
+                                     styleClass="btn-primary"
+                                     process="@this"/>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

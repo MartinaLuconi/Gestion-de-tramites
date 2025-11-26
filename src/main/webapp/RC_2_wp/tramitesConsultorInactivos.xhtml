@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+    <ui:define name="metadata">
+        <ui:param name="title" value="Trabajar con Estado"/> <!-- Automatic create breadCrumb and page title when param 'title' is provided. --> 
+        
+        <style type="text/css">
+            .ui-datatable .ui-datatable-header {
+                text-align: right !important;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="description">
+       Tramines Inactivos 
+    </ui:define>
+
+    <ui:define name="body">
+    <h:form>
+        <p:focus context="@form"/>
+    <div class="box box-primary">
+        <!-- FILTROS    
+        <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-md-6">
+                    <p:outputPanel>
+                        <h:outputText value="Estado:"/>
+                        <p:spacer height="10"/>
+                        <p:inputText id="codFilter"  style="width:150px"
+                                     placeholder="" value="#uiTramitesConsultorAnulados.estadoFiltro}" onfocus="Javascript:this.focus();this.select();">
+                                        <p:ajax event="keyup" 
+                                            listener="#uiTramitesConsultorAnulados.filtrar()}" 
+                                            update="@form:grid1"
+                                            />
+                                     
+                                    </p:inputText>
+
+                    </p:outputPanel> 
+                </div>
+            
+                <div class="ui-g-12 ui-md-6">
+                   <p:outputPanel>
+                        <h:outputText value="Tipo Tramite:"/>
+                        <p:spacer height="10"/>
+                        <p:inputText id="nomFilter"  style="width:150px"
+                                     placeholder="" value="#uiTramitesConsultorAnulados.nombreTipoTramiteFiltro}">
+                                        <p:ajax event="keyup" 
+                                            listener="#uiTramitesConsultorAnulados.filtrar()}" 
+                                            update="@form:grid1"
+                                        />
+                                     
+                        </p:inputText>
+                    </p:outputPanel> 
+                </div>
+            
+                <div class="ui-g-12 ui-md-6"> 
+                        <p:outputPanel>
+                            <h:outputText value="Fecha Desde: "/>
+                            <p:calendar id="fechaDesdeFiltro" style="width:150px"  
+                                        value="#uiTramitesConsultorAnulados.fechaFiltro}" 
+                                        pattern="dd/MM/yyyy" required="true"
+                                        navigator="true"
+                                        autocomplete="off">
+                                <p:ajax event="dateSelect" listener="#uiTramitesConsultorAnulados.filtrar()}" update="grid1"/>
+                            </p:calendar>
+                        </p:outputPanel>
+                </div>
+            
+        </div>-->
+        <!-- Tabla para mostrar la lista de Tramites -->
+         <p:separator/>
+
+        <div class="ui-g ui-fluid">
+ 
+        <p:dataTable id="grid1" widgetVar="TramitesConsultorTable" value="#{uiTramitesConsultorAnulados.obtenerTramitesConsultorInactivos(uiIniciarSesion.nombreUsuario)}" 
+                     var="tramiteConsultor"
+                      style="text-align: center;">
+
+            <p:column>
+                <f:facet name="header">Nro Tramite</f:facet>
+              #{tramiteConsultor.nroTramite}
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">Tipo Tramite</f:facet>
+                #{tramiteConsultor.nombreTipoTramite}
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">Fecha Inicio</f:facet>
+                #{tramiteConsultor.fechaInicio}
+            </p:column>
+
+
+            <p:column>
+                <f:facet name="header">Cuit</f:facet>
+               #{tramiteConsultor.cuitCliente}
+            </p:column>
+                
+            <p:column>
+                <f:facet name="header">Estado</f:facet>
+                #{tramiteConsultor.estado}   
+                
+            </p:column>
+               
+             <p:column> 
+                   
+                <!--<p:commandButton icon="pi pi-search" styleClass="btn-info" action="#uiTramitesConsultor.irATramite(tramiteConsultor.nroTramite)}">
+                    <f:ajax render="@form"/>
+                </p:commandButton>-->
+                 
+               <p:commandButton icon="pi pi-search"  styleClass="btn-info" 
+                                action="#{uiTramitesConsultorAnulados.irATramite(tramiteConsultor.nroTramite)}"
+                                         process="@this"
+                                         update="@none">
+                </p:commandButton>
+            </p:column>
+                    
+    
+
+        </p:dataTable>
+            </div>
+    </div>
+
+   </h:form>
+
+ </ui:define>
+    </ui:composition>

@@ -1,0 +1,185 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+    <ui:define name="metadata">
+        <ui:param name="title" value="Trabajar con Documentación"/>
+        <style type="text/css">
+            .centered-column {
+                text-align: center;
+                vertical-align: middle;
+                font-size: 18px;
+            }
+            .consultor-column {
+                width: 300px;
+                font-size: 18px;
+            }
+            .small-column {
+                width: 100px;
+                font-size: 18px;
+            }
+            .small-add-button, .small-delete-button {
+                font-size: 14px;
+                padding: 5px 10px;
+                margin: auto;
+                text-align: center;
+                transition: background-color 0.3s ease, transform 0.7s ease;
+            }
+            .derecha {
+                position: absolute;
+                right: 20px;
+            }
+            .small-add-button {
+                background-color: #00cc00 !important;
+                color: white !important;
+            }
+            .small-add-button:hover {
+                background-color: #009900 !important;
+            }
+            .small-delete-button {
+                background-color: #ff3333 !important;
+                color: white !important;
+            }
+            .small-delete-button:hover {
+                background-color: darkred !important;
+            }
+            .input-margin {
+                margin-right: 10px;
+            }
+            .search-container {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                margin-right: 30px;
+            }
+            .search-button {
+                min-width: 100px;
+                margin-left: 20px;
+            }
+            .header-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 20px;
+            }
+            .label-large {
+                font-size: 24px;
+                font-weight: bold;
+                margin-right: 10px;
+            }
+            .input-large {
+                font-size: 20px;
+                padding: 5px;
+                width: 120px;
+            }
+            .tables-container {
+                display: flex;
+                justify-content: space-between;
+            }
+            .btn-info {
+                background-color: #17a2b8;
+                border-color: #17a2b8;
+                color: white;
+                font-size: 14px;
+                padding: 5px 10px;
+            }
+            .btn-info:disabled {
+                background-color: gray;
+                border-color: gray;
+                cursor: not-allowed;
+            }
+            .add-button-container {
+                display: flex;
+                justify-content: flex-end;
+                margin-bottom: 10px;
+            }
+            .center-text {
+                text-align: center;
+            }
+            .box-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form>
+            <p:focus context="@form"/>
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h2>Documentación</h2>
+                </div>
+                <div styleClass="derecha">
+                    <p:commandButton value="Agregar" icon="fa fa-plus" 
+                                     action="#{uiabmDocumentacionLista.irAgregarDocumentacion()}" 
+                                     styleClass="small-add-button" global="false"/>
+                </div>
+
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-md-6">
+                        <p:outputPanel>
+                            <h:outputText value="Código:"/>
+                            <p:inputText id="codigoFilter" style="width:150px" value="#{uiabmDocumentacionLista.codDocumentacionFiltro}">
+                                <p:ajax event="keyup" delay="500" listener="#{uiabmDocumentacionLista.buscarDocumentaciones()}" update="@form:grid" global="false"/>
+                            </p:inputText>
+                        </p:outputPanel>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-6">
+                        <p:outputPanel>
+                            <h:outputText value="Nombre:"/>
+                            <p:inputText id="nombreFilter" style="width:150px" value="#{uiabmDocumentacionLista.nombreDocumentacionFiltro}">
+                                <p:ajax event="keyup" delay="500" listener="#{uiabmDocumentacionLista.buscarDocumentaciones()}" update="@form:grid" global="false"/>
+                            </p:inputText>
+                        </p:outputPanel>
+                    </div>
+                </div>
+
+                <p:blockUI block="grid" trigger="codigoFilter, nombreFilter" widgetVar="blockGrid" />
+
+                <p:dataTable id="grid" value="#{uiabmDocumentacionLista.buscarDocumentaciones()}" var="documentacion" 
+                             styleClass="center-text">
+                    <p:column headerText="Código">
+                        #{documentacion.codDocumentacion}
+                    </p:column>
+
+                    <p:column headerText="Nombre">
+                        #{documentacion.nombreDocumentacion}
+                    </p:column>
+
+                    <p:column headerText="Fecha Baja">
+                        #{documentacion.fechaHoraBajaDocumentacion}
+                    </p:column>
+
+                    <p:column headerText="Acciones" styleClass="center-text">
+                        <p:commandButton styleClass="btn-info" value="Modificar" 
+                                         action="#{uiabmDocumentacionLista.irModificarDocumentacion(documentacion.codDocumentacion)}" 
+                                          />
+
+                        <p:commandButton styleClass="small-delete-button" value="Eliminar" 
+                                         actionListener="#{uiabmDocumentacionLista.darDeBajaDocumentacion(documentacion.codDocumentacion)}" 
+                                         update="@form:grid" 
+                                         >
+                            <p:confirm header="Anulación de #{documentacion.codDocumentacion}" 
+                                       message="¿Está seguro de dar de baja el documento #{documentacion.nombreDocumentacion}?" 
+                                       icon="ui-icon-alert"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" styleClass="box-solid box-danger">
+                    <p:commandButton value="Si" type="button" styleClass="btn-material btn-primary ui-confirmdialog-yes" 
+                                     icon="fa fa-check" update="@form:grid"/>
+                    <p:commandButton value="No" type="button" styleClass="btn-material btn-danger ui-confirmdialog-no" 
+                                     icon="fa fa-close" update="@form:grid"/>
+                </p:confirmDialog>
+
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

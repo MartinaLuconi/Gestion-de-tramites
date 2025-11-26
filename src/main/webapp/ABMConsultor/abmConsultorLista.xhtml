@@ -1,0 +1,107 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+    <ui:define name="metadata">
+        <ui:param name="title" value="Trabajar con Consultor"/> 
+        <style type="text/css">
+            .ui-datatable td, .ui-datatable th {
+                text-align: center; 
+            }
+            .action-button {
+                width: 100px; /* Define un ancho fijo para los botones */
+                text-align: center; /* Alinea el texto en el centro */
+            }
+            .action-column {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="description">
+        Trabajar con Consultor
+    </ui:define>
+
+    <ui:define name="body">
+    <h:form>
+        <p:focus context="@form"/>
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <div id="main-buttons">
+                    <p:commandButton value="Agregar Consultor" icon="fa fa-plus" action="#{uiabmConsultorLista.irAgregarConsultor()}" styleClass="btn-primary" global="false"/>
+                </div>
+            </div>
+
+            <p:separator/>
+
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-md-6">
+                    <p:outputPanel>
+                        <h:outputText value="Legajo:"/>
+                        <p:spacer height="10"/>
+                        <p:inputText id="legajoFilter" style="width:150px" value="#{uiabmConsultorLista.legajoConsultorFiltro}">
+                            <p:ajax event="keyup" listener="#{uiabmConsultorLista.buscarConsultores()}" update="@form:grid1" global="false"/>
+                        </p:inputText>
+                    </p:outputPanel>
+                </div>
+
+                <div class="ui-g-12 ui-md-6">
+                    <p:outputPanel>
+                        <h:outputText value="Nombre:"/>
+                        <p:spacer height="10"/>
+                        <p:inputText id="nombreFilter" style="width:150px" value="#{uiabmConsultorLista.nombreApellidoConsultorFiltro}">
+                            <p:ajax event="keyup" listener="#{uiabmConsultorLista.buscarConsultores()}" update="@form:grid1" global="false"/>
+                        </p:inputText>
+                    </p:outputPanel>
+                </div>
+            </div>
+
+            <p:spacer height="5"/>
+
+            <p:dataTable id="grid1" widgetVar="consultorTable" value="#{uiabmConsultorLista.buscarConsultores()}" var="consultor">
+                  <p:column>
+                    <f:facet name="header">Legajo</f:facet>
+                    #{consultor.legajoConsultor}
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">Consultor</f:facet>
+                    #{consultor.nombreApellidoConsultor}
+                </p:column>
+                
+                <p:column>
+                    <f:facet name="header">Trámites Asigandos</f:facet>
+                    #{consultor.consultorNroMaxTramite}
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">Fecha Baja</f:facet>
+                    #{consultor.fechaHoraBajaConsultor}
+                </p:column>
+
+                <p:column styleClass="action-column">
+                    <f:facet name="header">Acciones</f:facet>
+                    <p:commandButton value="Modificar" styleClass="btn-info" action="#{uiabmConsultorLista.irModificarConsultor(consultor.legajoConsultor)}" global="false">
+                        <f:ajax render="@form"/>
+                    </p:commandButton>
+                    <p:spacer width="5"/>
+                    <p:commandButton value="Eliminar" styleClass="btn-danger" actionListener="#{uiabmConsultorLista.darDeBajaConsultor(consultor.legajoConsultor)}" update="@form:grid1">
+                        <p:confirm header="Anulación de #{consultor.legajoConsultor} #{consultor.nombreApellidoConsultor}" message="¿Está seguro?" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <!-- Diálogo de confirmación sin 'global=false' para mantener su funcionalidad -->
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" styleClass="box-solid box-danger">
+                        <p:commandButton value="Si" type="button" styleClass="btn-material btn-primary ui-confirmdialog-yes" 
+                                         icon="fa fa-check" update="@form:grid1"/>
+                        <p:commandButton value="No" type="button" styleClass="btn-material btn-danger ui-confirmdialog-no" 
+                                         icon="fa fa-close" update="@form:grid1"/>
+                    </p:confirmDialog>
+                </p:column>
+            </p:dataTable>
+        </div>
+    </h:form>
+    </ui:define>
+</ui:composition>

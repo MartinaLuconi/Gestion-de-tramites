@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ul class="sidebar-menu tree" data-widget="tree">
+        <li>
+            <p:link outcome="/index" onclick="clearBreadCrumbs()">
+                <i class="fa fa-home"></i>
+                <span>Home</span>
+            </p:link>
+        </li>
+        <li class="header">
+            General
+        </li>
+        
+        <li>
+            <p:link outcome="/ABMCliente/listaClientes.xhtml?faces-redirect=true">
+                    <i class="pi pi-users"></i>
+                <span>Clientes</span>
+            </p:link>
+         </li>
+        
+        <li>
+            <p:link outcome="/ABMConsultor/abmConsultorLista.xhtml?faces-redirect=true">
+                 <i class="pi pi-users"></i>
+                <span>Consultores</span>
+            </p:link>
+        </li>
+        
+        <li>
+            <p:link outcome="/ConfigurarAgenda/configurarAgenda.xhtml?faces-redirect=true">
+                <i class="pi pi-calendar-plus"></i>
+                <span>Configurar Agenda</span>
+            </p:link>
+        </li>
+        
+        <li>
+            <p:link outcome="/ABMDocumentacion/abmDocumentacionLista.xhtml?faces-redirect=true">
+                <i class="pi pi-id-card"></i>
+                <span>Documentación</span>
+            </p:link>
+        </li>
+         
+        <li>
+            <p:link outcome="/CargarTramite/mostrarTramitesLista.xhtml?faces-redirect=true">
+                <i class="pi pi-plus-circle"></i>
+                <span>Cargar Trámite</span>
+            </p:link>
+        </li>
+        
+        <li>
+            <p:link outcome="/SolicitarTramiteWEB/solicitarTramiteWeb.xhtml?faces-redirect=true">
+                <i class="pi pi-desktop"></i>
+                <span>Solicitar Tramite WEB</span>
+            </p:link>
+        </li>
+        
+        <li>
+            <p:link outcome="/ABMCategoriaTramite/abmCategoriaTramiteLista.xhtml?faces-redirect=true">
+                <i class="pi pi-tags"></i>
+                <span>Configurar Categoria</span>
+            </p:link>
+        </li>
+        
+          <li>
+            <p:link outcome="/ABMTipoTramite/abmTipoTramiteLista.xhtml?faces-redirect=true">
+                <i class="pi pi-cog"></i>
+                <span>Configurar TipoTramite</span>
+            </p:link>
+        </li>
+        
+        <li>
+            <p:link outcome="/RC_2_wp/tramitesConsultor.xhtml?faces-redirect=true">
+                    <i class="pi pi-history"></i>
+                <span>Cambiar Estado</span>
+            </p:link>
+        </li> 
+        
+        
+        
+        <li>
+            <p:link outcome="/ListaPrecio/actualizarLP.xhtml?faces-redirect=true">
+                    <i class="pi pi-dollar"></i>
+                <span>Lista de Precios</span>
+            </p:link>
+        </li>
+        <!-- comment 
+        <li>
+            <p:link outcome="/ABMConfigurarVersiones/VersionGrillaUI.xhtml?faces-redirect=true">
+                    <i class="pi pi-sitemap"></i>
+                    <span>ConfigurarVersiones</span>
+            </p:link>
+        </li>-->
+        
+        <li>
+            <p:link outcome="/ABMEstadoTramite/abmEstadoTramiteLista.xhtml?faces-redirect=true">
+                    <i class="pi pi-cog"></i>
+                    <span>Configurar Estado Tramite</span>
+            </p:link>
+        </li>        
+    </ul>
+
+</ui:composition>

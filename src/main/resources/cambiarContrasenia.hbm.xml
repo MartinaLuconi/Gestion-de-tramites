@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="entidades.CambiarContrasenia" table="cambiarContrasenia">
+        
+        <id name="OID" type="string">
+            <column name="OIDCambiarContrasenia"/>
+            <generator class="uuid2"/>
+        </id>
+
+        <property name="activo" type="boolean">
+            <column name="activo"/>
+        </property>
+
+        
+        <property name="codigoValidacion" type="int">
+            <column name="codigoValidacion"/>
+        </property>
+        
+        
+        <property name="fechaHoraDesdeCodigo" type="timestamp">
+            <column name="fechaHoraDesdeCodigo"/>
+        </property>
+        
+        <property name="fechaHoraHastaCodigo" type="timestamp">
+            <column name="fechaHoraHastaCodigo"/>
+        </property>
+        
+        <many-to-one name="usuarioObj" class="entidades.Usuario" column="OIDUsuario"/>
+        
+    </class>
+
+</hibernate-mapping>
+
+
+
+
+

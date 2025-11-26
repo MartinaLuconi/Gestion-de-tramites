@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="entidades.Version" table="version">
+
+        <id name="OID" type="string">
+            <column name="OIDVersion"/>
+            <generator class="uuid2"/>
+        </id>
+
+        <property name="codVersion" type="int">
+            <column name="codVersion"/>
+        </property>
+        
+        <property name="draw" type="string">
+                    <column name="draw"  length="1000" />
+        </property>
+
+        <property name="fechaHoraDesdeVersion" column="fechaHoraDesdeVersion" type="timestamp" not-null="true"/>
+        
+        <property name="fechaHoraHastaVersion" column="fechaHoraHastaVersion" type="timestamp" not-null="true"/>        
+
+        <property name="fechaHoraBajaVersion" column="fechaHoraBajaVersion" type="timestamp"/>       
+        
+        <many-to-one name="tipoTramite" class="entidades.TipoTramite" column="OIDTipoTramite" not-null="true"/>
+        
+        <bag name="transicionEstadoList" table="transicionEstado" cascade="save-update" inverse="false">
+            <key column="OIDVersion"/>
+            <one-to-many class="entidades.TransicionEstado"/>
+        </bag>
+        
+    </class>
+    
+</hibernate-mapping>

@@ -1,0 +1,97 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <!-- Metadata necesaria -->
+        </f:metadata>
+        <ui:param name="renderFormAsterisks" value="true"/>
+        <style type="text/css">
+             /* Estilos personalizados */
+            .centered-column { text-align: center; vertical-align: middle; font-size: 18px; }
+            .consultor-column { width: 300px; font-size: 18px; }
+            .small-column { width: 100px; font-size: 18px; }
+            .small-add-button, .small-delete-button { font-size: 14px; padding: 5px 10px; }
+            .small-add-button { background-color: #00cc00 !important; color: white !important; }
+            .small-add-button:hover { background-color: #009900 !important; }
+            .small-delete-button { background-color: #ff3333 !important; color: white !important; }
+            .small-delete-button:hover { background-color: darkred !important; }
+            .input-margin { margin-right: 10px; }
+            .search-container { display: flex; justify-content: flex-end; align-items: center; margin-right: 30px; }
+            .search-button { min-width: 100px; margin-left: 20px; }
+            .header-container { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; }
+            .label-large { font-size: 24px; font-weight: bold; margin-right: 10px; }
+            .input-large { font-size: 20px; padding: 5px; width: 120px; }
+            .tables-container { display: flex; justify-content: space-between; }
+            .form-buttons { display: flex; justify-content: center; gap: 20px; margin-top: 20px; } /* Nueva clase */
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        <!-- Título de la página -->
+        #{uiabmDocumentacion.insert ? 'Agregar Documentación' : 'Modificar Documentación'}
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form id="form" prependId="false">
+            <p:panel styleClass="box-primary card">
+                <div class="ui-g ui-fluid">
+
+                    <!-- Campo de entrada para el código de la documentación (visible solo en modo de modificación) -->
+                    <ui:fragment rendered="#{!uiabmDocumentacion.insert}">
+                        <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                            <div class="ui-sm-12 ui-g-11">
+                                <p:outputLabel for="codDocumentacion" value="Código de la Documentación:" />
+                            </div>
+                            <div class="ui-sm-12 ui-g-11">
+                                <p:inputText id="codDocumentacion" 
+                                             value="#{uiabmDocumentacion.codDocumentacion}" 
+                                             style="width: 150px;" 
+                                             disabled="true" />
+                                <p:message id="codDocumentacionMSG" for="codDocumentacion"/>
+                            </div>
+                        </div>
+                    </ui:fragment>
+
+
+                    <!-- Campo de entrada para el nombre de la documentación -->
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel for="nombreDocumentacion" value="Nombre de la Documentación:" />
+                        </div>
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:inputText id="nombreDocumentacion" 
+                                         value="#{uiabmDocumentacion.nombreDocumentacion}" 
+                                         style="width: 200px;" />
+                            <p:message id="nombreDocumentacionMSG" for="nombreDocumentacion"/>
+                        </div>
+                    </div>
+
+                    <!-- Contenedor de botones Agregar/Modificar y Volver -->
+                    <div class="ui-sm-12 ui-g-12 ui-g-nopad" style="text-align:left; margin-top: 20px;">
+                    <div class="ui-sm-12" style="display: flex; gap: 10px; justify-content: flex-start;">
+                        <!-- Botón dinámico para agregar/modificar documentación -->
+                        <p:commandButton value="#{uiabmDocumentacion.insert ? 'Agregar' : 'Modificar'}" 
+                                         action="#{uiabmDocumentacion.agregarModificarDocumentacion()}" 
+                                         icon="fa fa-check" 
+                                         styleClass="btn-primary"
+                                         style="width: 100px; padding: 4px;" />
+
+                        <!-- Botón para volver a la lista de consultores -->
+                        <p:commandButton value="Volver" 
+                                         action="#{uiabmDocumentacion.volverALista()}" 
+                                         icon="fa fa-arrow-left" 
+                                         styleClass="btn-secondary"
+                                         style="width: 100px; padding: 4px;" />
+                    </div>
+                    </div>
+                </div>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

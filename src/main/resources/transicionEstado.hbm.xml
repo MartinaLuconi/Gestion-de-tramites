@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="entidades.TransicionEstado" table="transicionEstado">
+
+        <id name="OID" type="string">
+            <column name="OIDTransicionEstado"/>
+            <generator class="uuid2"/>
+        </id>
+
+        <property name="nroTransicionEstado" type="int">
+            <column name="nroTransicionEstado"/>
+        </property>
+        
+        <many-to-one name="estadoActual" class="entidades.EstadoTramite" column="OIDEstadoTramite"/>
+        
+        <bag name="estadosDestino" table="Estados_Destino" cascade="all">
+            <key column="OIDTransicionEstado"/>
+            <many-to-many column="OIDEstadoTramite" class="entidades.EstadoTramite"/>
+        </bag>
+        
+    </class>
+    
+</hibernate-mapping>

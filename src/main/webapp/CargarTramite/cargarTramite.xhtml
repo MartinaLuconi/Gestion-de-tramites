@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+    <ui:define name="metadata">
+        <f:metadata />
+        <ui:param name="renderFormAsterisks" value="true" />
+    </ui:define>
+
+    <ui:define name="title">
+        Datos del Trámite
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form id="formCliente" prependId="false">
+            <p:panel styleClass="box-primary card">
+                <div class="ui-g ui-fluid">
+
+                    <!-- Campo de entrada para el cliente -->
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel for="cuit" value="CUIT del Cliente:" />
+                        </div>
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:inputText id="cuit" 
+                                         autocomplete="off"
+                                         value="#{uicargarTramite.cuit}" 
+                                         style="width: 150px;"
+                                         onkeyup="if(event.key === 'Enter') PF('cuitBoton').jq.click();">
+                                <p:ajax update="formCliente"/>
+                            </p:inputText>
+                            <p:message id="cuitMSG" for="cuit"/>
+                        </div>
+
+                        <!-- Botón para obtener el cliente -->
+                        <p:commandButton id="cuitBoton" 
+                                         value="Obtener Cliente" 
+                                         action="#{uicargarTramite.obtenerCliente(uicargarTramite.cuit)}" 
+                                         update=":formCliente:panelDatosCliente"
+                                         style="display:none;" />
+                    </div> <!-- Cierre del div para el cliente -->
+
+                    <!-- Datos del cliente obtenidos -->
+                    <p:panelGrid id="panelDatosCliente" columns="2" style="margin-top: 10px;">
+                        <p:outputLabel value="Nombre:" />
+                        <p:inputText value="#{uicargarTramite.cargarTramiteGrilla.nombreCliente}" 
+                                     readonly="true" 
+                                     required="true"/>
+
+                        <p:outputLabel value="Dirección:" />
+                        <p:inputText value="#{uicargarTramite.cargarTramiteGrilla.direccion}" 
+                                     readonly="true" 
+                                     required="true"/>
+                    </p:panelGrid>
+
+                </div> <!-- Cierre del div principal del formCliente -->
+            </p:panel>
+        </h:form>
+
+        <!-- Formulario para obtener tipo de trámite -->
+        <h:form id="formTramite" prependId="false" >
+            <p:panel styleClass="box-primary card">
+                <div class="ui-g ui-fluid">
+
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel for="codigo" value="Código del Tipo Trámite" />
+                        </div>
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:inputText id="codigo" 
+                                         autocomplete="off"
+                                         value="#{uicargarTramite.codigoTT}" 
+                                         style="width: 150px;"
+                                         onkeyup="if(event.key === 'Enter') PF('codBoton').jq.click();">
+                                <p:ajax update="formTramite"/>
+                            </p:inputText>
+                            <p:message id="codigoMSG" for="codigo"/>
+                        </div>
+
+                        <!-- Botón para obtener el tipo de trámite -->
+                        <p:commandButton id="codBoton" 
+                                         value="Obtener Tipo Trámite" 
+                                         action="#{uicargarTramite.obtenerTipoTramite(uicargarTramite.codigoTT)}" 
+                                         update=":formTramite:panelDatosTramite"
+                                         style="display:none;" />
+                    </div> <!-- Cierre del div para el tipo trámite -->
+
+                    <!-- Datos del tipo trámite obtenidos -->
+                    <p:panelGrid id="panelDatosTramite" columns="2" rendered="#{uicargarTramite.codigoTT != null}" style="margin-top: 10px;">
+                        <p:outputLabel value="Nombre del Tipo Trámite:" />
+                        <p:inputText value="#{uicargarTramite.cargarTramiteGrilla.nombreTipoTramite}" readonly="true" />
+                    </p:panelGrid>
+                </div> 
+            </p:panel>
+        </h:form>
+        
+        <!-- Botones "Atrás" y "Cargar Trámite" -->
+        <h:form id="formBoton">
+            <p:focus context="@form"/>
+            <div class="ui-sm-12 ui-g-4" style="text-align: left;">
+                <p:commandButton value="Cancelar"  
+                                 action="#{uicargarTramite.cancelar()}" 
+                                 process="@this"/>
+            </div>
+            <div class="ui-sm-12 ui-g-4" style="text-align: right;">
+                <p:commandButton value="Cargar Trámite" 
+                                 action="#{uicargarTramite.botonCargar(uicargarTramite.cargarTramiteGrilla.cuit, 
+                                           uicargarTramite.cargarTramiteGrilla.codigo)}"
+                                 icon="fa fa-check"
+                                 styleClass="btn-primary"
+                                 process="@this"
+                                 update="formBoton"
+                                 />
+                <!-- Componente para mostrar los mensajes de error o éxito -->
+            </div>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

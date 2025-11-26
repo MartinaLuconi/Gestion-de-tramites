@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="entidades.Consultor" table="consultor">
+
+        <id name="OID" type="string">
+            <column name="OIDConsultor"/>
+            <generator class="uuid2"/>
+        </id>
+
+        <property name="legajoConsultor" type="int">
+            <column name="legajoConsultor"/>
+        </property>
+
+        <property name="nombreApellidoConsultor" type="string">
+            <column name="nombreApellidoConsultor"/>
+        </property>
+
+        <property name="consultorNroMaxTramite" type="int">
+            <column name="consultorNroMaxTramite"/>
+        </property>
+        
+        <property name="fechaHoraBajaConsultor" column="fechaHoraBajaConsultor" type="timestamp"/>
+
+        <many-to-one name="usuario" class="entidades.Usuario" column="OIDUsuario" not-null="false" lazy="false"/>
+    </class>
+    
+</hibernate-mapping>

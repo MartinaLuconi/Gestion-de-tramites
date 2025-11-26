@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+    <ui:define name="metadata">
+        <ui:param name="title" value="Trabajar con Versiones"/> 
+        <style type="text/css">
+            .ui-datatable .ui-datatable-header {
+                text-align: right !important;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="description">
+        Trabajar con Version
+    </ui:define>
+    
+    <ui:define name="body">
+    <h:form>
+        <p:focus context="@form"/>
+            <div class="box box-primary">
+                        
+        <!-- Tabla para mostrar la lista de Versiones y Tipos Tramite-->
+         <p:separator/>
+                <div class="ui-g ui-fluid">
+                   <div class="ui-g-12 ui-md-6">
+                    <p:outputPanel>
+                        <h:outputText value="Buscar por código de Tipo Tramite:  "/>
+                        <p:spacer height="10"/>
+                        <p:inputText id="codFilter"  style="width:150px" value="#{uiabmVersionTTLista.codigoFiltro}" >
+                            <p:ajax event="keyup" listener="#{uiabmVersionTTLista.listarTipoTramiteVersion()}" update="@form:grid1"/>
+                        </p:inputText>
+                    </p:outputPanel> </div>
+                    <!-- el otro filtro q no funciona
+                   <div class="ui-g-12 ui-md-6">
+                   <p:outputPanel>
+                        <h:outputText value="Buscar por nombre de Tipo Tramite:"/>
+                        <p:spacer height="10"/>
+                        <p:inputText id="nomFilter"  style="width:150px" placeholder="" value="#{uiabmVersionTTLista.nombreFiltro}">
+                            <p:ajax event="keyup" listener="#{uiabmVersionTTLista.listarTipoTramiteVersion()}" update="@form:grid1"/>
+                        </p:inputText>
+                    </p:outputPanel> 
+                   </div>
+                     -->
+                </div>
+            <p:spacer height="5"/>
+            <p:dataTable id="grid1" widgetVar="VersionTipoTable" value="#{uiabmVersionTTLista.listarTipoTramiteVersion()}" var="dtoVersionDeTipo" >
+
+                <p:column width="100px">
+                <f:facet name="header" >Código TT</f:facet>
+                #{dtoVersionDeTipo.codTipoTramite}
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">Nombre TT</f:facet>
+                #{dtoVersionDeTipo.nombreTipoTramite}
+            </p:column>
+            
+            <p:column>
+                <f:facet name="header">Fecha Baja TT</f:facet>
+                #{dtoVersionDeTipo.fechaHoraBajaTipoTramite}
+            </p:column>
+                 
+            <p:column>
+                <f:facet name="header">Ultima Version Vigente</f:facet>
+                #{dtoVersionDeTipo.codVersion}
+            </p:column>
+                
+            <p:column>
+                <f:facet name="header">Fecha desde Version</f:facet>
+                #{dtoVersionDeTipo.fechaHoraDesdeVersion}
+            </p:column>
+
+            <p:column width="250px">
+                <f:facet name="header">Acciones a version</f:facet>
+                <p:commandButton value="Editar" styleClass="btn-info" action="#{uiabmVersionTTLista.irEditarVersion(dtoVersionDeTipo.codTipoTramite)}" disabled="#{dtoVersionDeTipo.fechaHoraBajaTipoTramite != null}">
+                    <f:ajax render="@form"/>
+                </p:commandButton>
+                <p:spacer width="3"/>
+                <p:commandButton value="Ver" styleClass="btn-info"  action="#{uiabmVersionTTLista.irVerVersion(dtoVersionDeTipo.codTipoTramite, dtoVersionDeTipo.codVersion)}" disabled="#{dtoVersionDeTipo.codVersion == 0}">
+                </p:commandButton>
+                <p:spacer width="3"/>
+                <p:commandButton value="Historial" styleClass="btn-info" action="#{uiabmVersionTTLista.irHistorialVersion(dtoVersionDeTipo.codTipoTramite)}">
+                </p:commandButton>
+                
+                    <p:confirmDialog global="true"  showEffect="fade" hideEffect="fade" styleClass="box-solid box-danger">
+                        <p:commandButton value="Si" type="button" styleClass="btn-material btn-primary ui-confirmdialog-yes"
+                                         icon="fa fa-check" update="@form:grid1"/>
+                        <p:commandButton value="No" type="button" styleClass="btn-material btn-danger ui-confirmdialog-no"
+                                         icon="fa fa-close" update="@form:grid1"/>
+                    </p:confirmDialog>
+            </p:column>
+
+        </p:dataTable>
+            </div>
+
+   </h:form>
+        
+ </ui:define>
+    </ui:composition>

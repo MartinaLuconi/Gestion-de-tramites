@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:adm="http://github.com/adminfaces"
+              template="#{layoutMB.template}">
+
+
+    <ui:define name="metadata">
+        <f:metadata>
+
+        </f:metadata>
+        <ui:param name="renderFormAsterisks" value="true"/>
+    </ui:define>
+    <ui:define name="title">
+        Versión 
+    </ui:define>
+    <ui:define name="body">
+
+        
+   
+  
+        <p:panel styleClass="box-primary card">
+            
+            <h:form id="form" prependId="false">
+            <div class="ui-g ui-fluid">
+                <div class="ui-g ui-fluid">
+                    <!-- Número de Versión -->
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad">
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel for="codVersion" value="Número de Versión editando:" />
+                        </div>
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel id="codVersion" value="#{uiDraw.nroVersion}" style="width: 150px;"/>
+                        </div>
+                    </div>
+                     <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        <div class="ui-sm-12 ui-g-11">
+                          <p:outputLabel for="fechaHoraDesdeVersion" value="Fecha Desde Versión:" />
+                        </div>
+                        <div class="ui-sm-12 ui-g-11"> 
+                          <p:inputText id="fechaHoraDesdeVersion" value="#{uiDraw.fechaHoraDesdeVersion}" disabled="#{!uiDraw.insert}" >
+                          <p:message id="fechaHoraDesdeVersionMSG" for="fechaHoraDesdeVersion"/> 
+                          </p:inputText>
+                        </div>
+                     </div>
+                      <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        <div class="ui-sm-12 ui-g-11">
+                          <p:outputLabel for="fechaHoraHastaVersion" value="Fecha Hasta Versión:" />
+                        </div>
+                        <div class="ui-sm-12 ui-g-11"> 
+                          <p:inputText id="fechaHoraHastaVersion" value="#{uiDraw.fechaHoraHastaVersion}" disabled="#{!uiDraw.insert}" >
+                          <p:message id="fechaHoraHastaVersionMSG" for="fechaHoraHastaVersion"/> 
+                          </p:inputText>
+                        </div>
+                     </div>
+                </div>
+                    
+<!--
+                    -->
+                <div style="visibility: collapse" >
+                    <!-- Botón de Guardar -->
+                    <p:commandButton id="guardarBean2" value="Agregar versión" 
+                        action="#{uiDraw.guardar()}" 
+                        icon="fa fa-check"
+                        styleClass="btn-primary"  update="@form" style="visibility: hidden">                            
+                        <f:ajax render="@form"/>
+                    </p:commandButton>      
+
+                    <h:outputText id="eposibles" value="#{uiDraw.nodosPosibles}" style="visibility: hidden"/>
+                    <h:outputText id="editable" value="#{uiDraw.editable}" style="visibility: hidden"/>
+                    <h:outputText id="ecargarJson" value="#{uiDraw.cargarJSON}" style="visibility: hidden"/>
+                    <h:outputText id="titulo" value="#{uiDraw.titulo}" style="visibility: hidden"/>    
+                    <h:inputHidden id="jsonGuardar" value="#{uiDraw.guardarJSON}"/>  
+                    <p:commandButton id="guardarBean" action="#{uiDraw.guardar()}" style="visibility: hidden"/> 
+                </div>
+        </div>
+    </h:form>
+ 
+        <div style="height:70vh">
+            <iframe id="idraw" height="100%" width="100%" src="drawGIU.xhtml" style="border-color: #cacaca;border-width: 1px;" />
+        </div>
+            <p:separator/>
+            <div class="" style="height: 40px"> 
+                <button id="g2" name="g2" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left btn-primary" aria-label="" onclick="idraw.contentWindow.guardar();window.document.getElementById('guardarBean2').click();" type="submit"><span class="ui-button-icon-left ui-icon ui-c fa fa-check"></span><span class="ui-button-text ui-c">Agregar versión</span></button>
+            </div>
+            <p:separator/>
+        <p:commandButton value="VOLVER" styleClass="btn-info" action="#{uiDraw.volver()}">
+        </p:commandButton>
+    </p:panel><!-- comment -->
+    </ui:define>
+
+    </ui:composition >

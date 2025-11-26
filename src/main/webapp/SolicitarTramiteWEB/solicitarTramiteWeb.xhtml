@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+    
+
+    <ui:define name="metadata">
+        <f:metadata>
+
+        </f:metadata>
+        <ui:param name="renderFormAsterisks" value="true"/>
+    </ui:define>
+    <ui:define name="title">
+        Nuevo Tramite
+    </ui:define>
+    <ui:define name="body">
+<style>
+    .label {
+        width: 20%;
+        padding: 4px;
+    }
+
+    .value {
+        width: 80%;
+        padding: 4px;
+    }
+
+    .grid {
+        width: 100%;
+    }
+
+    .error {
+        color: red;
+    }
+
+    .outputLabel {
+        font-weight: bold;
+    }
+
+    .grid {
+        width: 33%;
+        padding: 4px;
+    }
+    
+    
+        *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+
+
+    .container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+    border: 2px solid #0094ff;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .card {
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .card img {
+        width: 50px;
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="card">
+    <h:form>
+
+        <p:growl id="growl" sticky="true" showDetail="true"/>
+
+        <p:wizard flowListener="#{uiSolicitarTramiteWeb.onFlowProcess}">
+            <p:tab id="validaciondeid" title="Validacion de Identidad">
+                <p:panel header="Validacion de Identidad">
+                   
+                     <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-4"
+                                         layout="grid" styleClass="ui-fluid">
+                        <p:outputLabel value="Ingresá tu número de CUIT" for="cuit"/>
+                        <p:inputText id="cuit" value="#{uiSolicitarTramiteWeb.cuitCliente}"
+                                             requiredMessage="El CUIT es requerido."
+                                             required="true" label="CUIT"/>
+
+                    </p:panelGrid>
+                </p:panel>
+            </p:tab>
+
+            <p:tab id="datosCliente" title="Confirme sus Datos">
+                <p:panel header="Confirme Sus Datos">
+                   
+                     <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-4"
+                                         layout="grid" styleClass="ui-fluid">
+                        <p:outputLabel value="Nombre" for="nombre"/>
+                        <h:outputText id="nombre" value="#{uiSolicitarTramiteWeb.nombreApellidoCliente}" />
+                        <p:outputLabel value="Cuit" for="cuit"/>
+                        <h:outputText id="cuit1" value="#{uiSolicitarTramiteWeb.cuitCliente}" />
+                        <p:outputLabel value="Direccion" for="direccion"/>
+                        <h:outputText id="direccion" value="#{uiSolicitarTramiteWeb.direccionCliente}"/>
+                        <p:outputLabel value="Mail" for="mail"/>        
+                        <h:outputText id="mail" value="#{uiSolicitarTramiteWeb.mailCliente}"
+                                     
+                                            />
+
+                    </p:panelGrid>
+                </p:panel>
+            </p:tab>
+
+            
+            <p:tab id="categ" title="Selección de Categoría">
+            <p:panel header="Seleccionar Categoría">
+                <p:dataView var="categoria" value="#{uiSolicitarTramiteWeb.obtenerCategorias()}"
+                            layout="grid" paginatorAlwaysVisible="false">
+                    <p:dataViewGridItem>
+                        <p:panel header="#{categoria.nombre}" styleClass="card">
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <p:commandButton value="Seleccionar" 
+                                                 action="#{uiSolicitarTramiteWeb.elegirCategorias(categoria.codigo)}" 
+                                                 process="@this" update="@form:tramite" />
+                               
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:dataViewGridItem>
+                </p:dataView>
+            </p:panel>
+        </p:tab>
+
+                    <p:tab id="tramite" title="Seleccionar Tipo de Trámite">
+                        <p:panel id="tram" header="Seleccionar Tipo de Trámite">
+                    <p:dataView var="tramite" value="#{uiSolicitarTramiteWeb.obtenerTramite()}"
+                                layout="grid" paginatorAlwaysVisible="false">
+                        <p:dataViewGridItem>
+                            <p:panel header="#{tramite.nombree}" styleClass="card">
+                                <h:panelGrid columns="2" cellpadding="10">
+                                    <h:outputText value="#{tramite.codigoo}" />
+                                    <h:outputText value="#{tramite.descripcionn}" />
+                                    <p:commandButton value="Seleccionar" 
+                                                     action="#{uiSolicitarTramiteWeb.elegirTipoTramites(tramite.codigoo)}" 
+                                                 process="@this" update="@form:tramite" />
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:dataViewGridItem>
+                    </p:dataView>
+                </p:panel>
+
+                    </p:tab>
+            
+            
+
+           <p:tab id="docum" title="Documentacion a presentar">
+                <p:panel id="documentacion" header="Documentacion a presentar">
+                     <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-4"
+                                         layout="grid" styleClass="ui-fluid">
+                        <p:outputLabel value="CodTT" for="CodTT"/>
+                        <h:outputText id="CodTT" value="#{uiSolicitarTramiteWeb.tramite.codigoo}" />
+                        <p:outputLabel value="Precio" for="Precio"/>
+                        <h:outputText id="Precio" value="#{uiSolicitarTramiteWeb.tramite.precioTipoTramite}"/>
+                        <p:outputLabel value="Descripcion" for="Descripcion"/>
+                        <h:outputText id="Descripcion" value="#{uiSolicitarTramiteWeb.tramite.descripcionn}"/>
+                        <p:outputLabel value="Tramite-Seleccionado" for="Tramite-Seleccionado"/>
+                        <h:outputText id="Tramite-Seleccionado" value="#{uiSolicitarTramiteWeb.tramite.nombree}"/>
+                       
+
+                    </p:panelGrid>
+              
+                    <!-- Documentación -->
+                        <p:dataTable id="grid1" widgetVar="docuTable" 
+                                     value="#{uiSolicitarTramiteWeb.tramite.DTOdocumentacion}" var="documentacion"
+                                     >
+                            <p:column>
+                                <f:facet name="header">Documentación a presentar</f:facet>
+                                #{documentacion.nombreDocumentacion}
+                            </p:column>
+                           </p:dataTable>
+                </p:panel>
+            </p:tab>
+            
+            
+            
+            <p:tab id="confir" title="Confirmación de Tramite">
+            <p:panel id="confirmacion" header="Confirmación de Tramite">
+                     <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-4"
+                                  layout="grid" styleClass="ui-fluid">
+            
+            <p:outputLabel value="Nombre" for="nombre"/>
+                        <h:outputText id="nombre1" value="#{uiSolicitarTramiteWeb.nombreApellidoCliente}" />
+                        <p:outputLabel value="Cuit" for="cuit"/>
+                        <h:outputText id="cuit2" value="#{uiSolicitarTramiteWeb.cuitCliente}" />
+                        <p:outputLabel value="Direccion" for="direccion"/>
+                        <h:outputText id="direccion1" value="#{uiSolicitarTramiteWeb.direccionCliente}"/>
+                        <p:outputLabel value="Tramite-Seleccionado" for="Tramite-Seleccionado"/>
+                        <h:outputText id="Tramite-Seleccionado1" value="#{uiSolicitarTramiteWeb.tramite.nombree}"/>
+                        <p:outputLabel value="Precio" for="Precio"/>
+                        <h:outputText id="Precio1" value="#{uiSolicitarTramiteWeb.tramite.precioTipoTramite}"/>
+                        
+                        
+                       <p:commandButton value="Confirmar"
+                                        action="#{uiSolicitarTramiteWeb.confirmarTramite()}" 
+                                                 process="@this" update="@form:tramite" />
+                       
+           
+                       
+            </p:panelGrid>
+                </p:panel>
+             </p:tab>
+            
+            
+                <p:tab id="confirm" title="Trámite Aprobado">
+    <p:panel id="confirmationPanel" style="background-color: #e0f7ff; padding: 20px; text-align: center; border-radius: 10px;">
+        
+        
+        <!-- Mensaje de confirmación -->
+        <h1 style="font-size: 24px; color: #333;">¡Su trámite ha sido solicitado con éxito!</h1>
+        
+        <!-- Detalles del trámite -->
+        <h:panelGrid columns="1" style="margin-top: 20px;">
+            <h:outputText value="Número de trámite: " style="font-size: 16px;" />
+            <h:outputText value="#{uiSolicitarTramiteWeb.tramite.nroTramite}" style="font-size: 16px; font-weight: bold;" />
+            
+            <h:outputText value="Consultor: " style="font-size: 16px; margin-top: 10px;" />
+            <h:outputText value="#{uiSolicitarTramiteWeb.tramite.nombreApellidoConsultor}" style="font-size: 16px; font-style: italic;" />
+            
+            <h:outputText value="Tiempo máximo de Entrega Documentacion: " style="font-size: 16px; margin-top: 10px; font-weight: bold;" />
+            <h:outputText value="#{uiSolicitarTramiteWeb.tramite.fechaHoraVencimientoDocumentacion}" styleClass="custom-text"> 
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                            </h:outputText>
+           
+        </h:panelGrid>
+        
+        
+        
+    </p:panel>
+</p:tab>
+
+            
+            
+            
+        </p:wizard>
+        <script>
+  
+        a=$(".ui-dataview-header");a.css('visibility', 'hidden');a.css('height', '0');
+
+</script>
+    </h:form>
+</div>
+            </ui:define>
+
+    </ui:composition >
+
+   

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Obtener Consultor</title>
+</h:head>
+<h:body>
+    <h:form>
+        <h:panelGrid columns="2">
+            <h:outputLabel value="Consultor Encontrado:" for="consultor"/>
+            <h:outputText id="consultor" value="#{uiObtenerConsultor.nombreApellidoConsultor}" rendered="#{not empty uiObtenerConsultor.nombreApellidoConsultor}"/>
+            
+            <h:outputLabel value="Legajo:" for="legajo"/>
+            <h:outputText id="legajo" value="#{uiObtenerConsultor.legajoConsultor}" rendered="#{not empty uiObtenerConsultor.legajoConsultor}"/>
+        </h:panelGrid>
+
+        <h:panelGrid>
+            <h:commandButton value="Actualizar Consultor" action="#{uiObtenerConsultor.init}" />
+        </h:panelGrid>
+
+        <h:outputText value="No se encontró un consultor disponible." rendered="#{empty uiObtenerConsultor.nombreApellidoConsultor}" />
+    </h:form>
+</h:body>
+</html>

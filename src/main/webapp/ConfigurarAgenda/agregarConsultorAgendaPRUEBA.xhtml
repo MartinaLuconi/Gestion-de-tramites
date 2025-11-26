@@ -1,0 +1,212 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" 
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+    <ui:define name="metadata">
+        <ui:param name="title" value="Configurar Agenda"/>
+
+        <style type="text/css">
+            .centered-column {
+                text-align: center;
+                vertical-align: middle;
+                font-size: 18px; /* Aumenta el tamaño de la fuente en las celdas de la tabla */
+            }
+            .consultor-column {
+                width: 300px;
+                font-size: 18px; /* Aumenta el tamaño de la fuente para los consultores */
+            }
+            .small-column {
+                width: 100px;
+                font-size: 18px; /* Aumenta el tamaño de la fuente para las fechas */
+            }
+            .small-add-button, .small-delete-button {
+                font-size: 14px;
+                padding: 5px 10px; /* Ajusta el tamaño del botón */
+                margin: auto;
+                text-align: center;
+                transition: background-color 0.3s ease, transform 0.7s ease;
+            }
+            .small-add-button {
+                background-color: #00cc00 !important;
+                color: white !important;
+            }
+            .small-add-button:hover {
+                background-color: #009900 !important;
+            }
+            .small-delete-button {
+                background-color: #ff3333 !important;
+                color: white !important;
+            }
+            .small-delete-button:hover {
+                background-color: darkred !important;
+            }
+            .input-margin {
+                margin-right: 10px;
+            }
+            .search-container {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                margin-right: 30px;
+            }
+            .search-button {
+                min-width: 100px;
+                margin-left: 20px; /* Añade espacio entre el botón de buscar y el campo Mes */
+            }
+            .header-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 20px;
+            }
+            .label-large {
+                font-size: 24px; /* Aumenta el tamaño de la letra para los textos Año: y Mes: */
+                font-weight: bold;
+                margin-right: 10px; /* Espaciado entre el texto y el input */
+            }
+            .input-large {
+                font-size: 20px; /* Aumenta el tamaño de los campos de entrada */
+                padding: 5px;
+                width: 120px; /* Aumenta el ancho de los inputs */
+            }
+            /* Nuevo estilo para el contenedor de tablas */
+            .tables-container {
+                display: flex; /* Usamos flexbox para colocar las tablas una al lado de la otra */
+                justify-content: space-between; /* Espacio entre las tablas */
+            }
+            .dataTable {
+                flex: 1; /* Cada tabla ocupará el mismo espacio */
+                margin: 0 10px; /* Espacio entre las tablas */
+            }
+            .botonPrueba {
+                margin: 50px !important;
+                padding: 7px 20px !important;
+                border: none;
+                outline: none;
+                color: #FFF;
+                cursor: pointer;
+                position: relative;
+                z-index: 0;
+                border-radius: 12px!important;
+            }
+            .botonPrueba::before {
+                content: "";
+                z-index: -1;
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-color: #333;
+                left: 0;
+                top: 0;
+                border-radius: 10px!important;
+            }
+            /* glow */
+            .botonPrueba::after {
+              content: "";
+              background: linear-gradient(
+                    45deg,
+                    #FF0000, #FF7300, #FFFB00, #48FF00,
+                    #00FFD5, #002BFF, #FF00C8, #FF0000
+                );
+                position: absolute;
+                top: -2px;
+                left: -2px;
+                background-size: 600%;
+                z-index: -1;
+                width: calc(100% + 4px);
+                height:  calc(100% + 4px);
+                filter: blur(8px);
+                animation: glowing 20s linear infinite;
+                transition: opacity .3s ease-in-out;
+                border-radius: 10px !important;
+                opacity: 1;
+            }
+            @keyframes glowing {
+                0% {background-position: 0 0;}
+                50% {background-position: 400% 0;}
+                100% {background-position: 0 0;}
+            }
+            /* hover */
+            .botonPrueba:hover::before {
+                opacity: 1;
+            }
+
+            .botonPrueba:active:after {
+                background: transparent;
+            }
+
+            .botonPrueba:active {
+                color: #000;
+                font-weight: bold;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form>
+            <p:focus context="@form"/>
+            <div class="box box-primary">
+                <h1 style="font-size: 48px; font-weight: bold; color: #333; padding-left: 20px;">Agregar Consultor a Agenda</h1>
+                <p:separator/>
+
+                <div class="header-container">
+                    <!-- Etiqueta "Año - Semana" en la parte superior izquierda -->
+                    <h:outputText value="Año: #{uiAgregarConsultorAgenda.anio} - Mes: #{uiAgregarConsultorAgenda.mes} - Semana: #{uiAgregarConsultorAgenda.semana}" style="font-weight: bold; font-size: 36px; color: #555;" />
+                    <p:commandButton value="← Volver" styleClass="btn-info" action="#{uiAgregarConsultorAgenda.volverAgenda(uiAgregarConsultorAgenda.anio, uiAgregarConsultorAgenda.mes)}" update="@form" title="Volver a la agenda" />
+                </div>
+                
+                <p:spacer height="5"/>
+                <div class="tables-container"> <!-- Contenedor para las tablas -->
+                    <div class="dataTable">
+                        <p:dataTable id="consultorTable" value="#{uiAgregarConsultorAgenda.cargarConsultoresAgregarPrueba()}" var="consultor">
+                            <p:column styleClass="centered-column small-column">
+                                <f:facet name="header">Legajo</f:facet>
+                                #{consultor.legajoConsultor}
+                            </p:column>
+
+                            <p:column styleClass="centered-column small-column">
+                                <f:facet name="header">Consultores</f:facet>
+                                #{consultor.nombreApellidoConsultor}
+                            </p:column>   
+
+                            <p:column styleClass="centered-column small-column">
+                                <f:facet name="header">Acciones</f:facet>
+                                <p:commandButton value="Agregar" styleClass="small-add-button" 
+                                                 action="#{uiAgregarConsultorAgenda.agregarAAgenda(uiAgregarConsultorAgenda.anio, uiAgregarConsultorAgenda.semana, consultor)}" 
+                                                 update="@form" title="Agregar consultor a la agenda" />
+                            </p:column>                        
+                        </p:dataTable>
+                    </div>
+                    <div class="dataTable">
+                        <p:dataTable id="consultorTable2" value="#{uiAgregarConsultorAgenda.cargarConsultoresEliminarPrueba()}" var="consultor2">
+                            <p:column styleClass="centered-column small-column">
+                                <f:facet name="header">Legajo</f:facet>
+                                #{consultor2.legajoConsultor}
+                            </p:column>
+
+                            <p:column styleClass="centered-column small-column">
+                                <f:facet name="header">Consultores Asignados</f:facet>
+                                #{consultor2.nombreApellidoConsultor}
+                            </p:column>   
+
+                            <p:column styleClass="centered-column small-column">
+                                <f:facet name="header">Acciones</f:facet>
+                                <p:commandButton value="Eliminar" styleClass="small-delete-button" 
+                                                 action="#{uiAgregarConsultorAgenda.bajaConsultorDeAgenda(uiAgregarConsultorAgenda.semana, uiAgregarConsultorAgenda.anio, consultor2)}" 
+                                                 update="@form" title="Eliminar consultor de la agenda" />
+                            </p:column>                        
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+            <p:commandButton value="Prueba" styleClass="botonPrueba" 
+                                 action="#{uiAgregarConsultorAgenda.volverDePrueba(uiAgregarConsultorAgenda.anio, uiAgregarConsultorAgenda.semana)}" 
+                                                  title="Apagar el modo Prueba"/>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

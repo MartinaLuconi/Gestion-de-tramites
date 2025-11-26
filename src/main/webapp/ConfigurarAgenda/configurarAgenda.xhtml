@@ -1,0 +1,183 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" 
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+    <ui:define name="metadata">
+        <ui:param name="title" value="Configurar Agenda"/>
+
+        <style type="text/css">
+        .centered-column {
+            text-align: center;
+            vertical-align: middle;
+            font-size: 18px; /* Aumenta el tamaño de la fuente en las celdas de la tabla */
+        }
+        .consultor-column {
+            width: 300px;
+            font-size: 18px; /* Aumenta el tamaño de la fuente para los consultores */
+        }
+        .small-column {
+            width: 100px;
+            font-size: 18px; /* Aumenta el tamaño de la fuente para las fechas */
+        }
+        .small-delete-button {
+            background-color: #ff3333 !important;
+            color: white !important;
+            font-size: 14px;
+            padding: 5px 10px; /* Ajusta el tamaño del botón */
+            margin: auto;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.7s ease;
+        }
+        .small-delete-button:hover {
+            background-color: darkred !important;
+        }
+        .input-margin {
+            margin-right: 10px;
+        }
+        .search-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-right: 30px;
+        }
+        .search-button {
+            min-width: 100px;
+            margin-left: 20px; /* Añade espacio entre el botón de buscar y el campo Mes */
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+        .label-large {
+            font-size: 24px; /* Aumenta el tamaño de la letra para los textos Año: y Mes: */
+            font-weight: bold;
+            margin-right: 10px; /* Espaciado entre el texto y el input */
+        }
+        .input-large {
+            font-size: 20px; /* Aumenta el tamaño de los campos de entrada */
+            padding: 5px;
+            width: 120px; /* Aumenta el ancho de los inputs */
+        }
+    </style>
+
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form>
+            <p:focus context="@form"/>
+            <div class="box box-primary">
+                <h1 style="font-size: 48px; font-weight: bold; color: #333; padding-left: 20px;">Configurar Agenda</h1>
+                    <p:separator/>
+
+                    <div class="header-container">
+                        <!-- Etiqueta "Año - Mes" en la parte superior izquierda -->
+                        <div style="font-weight: bold; font-size: 36px; color: #555;">
+                            #{uiConfigurarAgenda.anio} - #{uiConfigurarAgenda.getMesNombre()}
+                        </div>
+
+                        <!-- Búsqueda de año y mes a la derecha -->
+                        <div class="search-container">
+                            <h:outputLabel for="anio" value="Año:" class="label-large"/>
+                            <h:selectOneMenu id="anio" value="#{uiConfigurarAgenda.anio}" required="true" label="Año" 
+                                            class="input-large input-margin" style="width: 140px ;display: inline-block;">
+                               <f:selectItems value="#{uiConfigurarAgenda.listaAnios}" />
+                               <p:ajax update="@form" listener="#{uiConfigurarAgenda.buscarAgendas()}"/>
+                           </h:selectOneMenu>
+
+
+                            <h:outputLabel for="mes" value="Mes:" class="label-large"/>
+                            <h:selectOneMenu id="mes" value="#{uiConfigurarAgenda.mes}" required="true" label="Mes" class="input-large" style="width: 140px;">
+                                <f:selectItem itemLabel="Enero" itemValue="1" />
+                                <f:selectItem itemLabel="Febrero" itemValue="2" />
+                                <f:selectItem itemLabel="Marzo" itemValue="3" />
+                                <f:selectItem itemLabel="Abril" itemValue="4" />
+                                <f:selectItem itemLabel="Mayo" itemValue="5" />
+                                <f:selectItem itemLabel="Junio" itemValue="6" />
+                                <f:selectItem itemLabel="Julio" itemValue="7" />
+                                <f:selectItem itemLabel="Agosto" itemValue="8" />
+                                <f:selectItem itemLabel="Septiembre" itemValue="9" />
+                                <f:selectItem itemLabel="Octubre" itemValue="10" />
+                                <f:selectItem itemLabel="Noviembre" itemValue="11" />
+                                <f:selectItem itemLabel="Diciembre" itemValue="12" />
+                                <p:ajax update="@form" listener="#{uiConfigurarAgenda.buscarAgendas()}"/>
+                            </h:selectOneMenu>
+                            <h:message for="mes" />
+                        </div>
+                    </div>
+
+                    <p:spacer height="5"/>
+
+                    <!-- Agrega lazy="false" -->
+                    <p:dataTable id="grid1" value="#{uiConfigurarAgenda.buscarAgendas()}" var="agenda" lazy="false">
+                        
+                        <p:column styleClass="centered-column small-column">
+                            <f:facet name="header">Semana</f:facet>
+                            <h:outputText value="#{agenda.semana}">
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column styleClass="centered-column small-column">
+                            <f:facet name="header">Fecha Desde</f:facet>
+                            <h:outputText value="#{agenda.fechaDesdeAgenda}">
+                                <f:convertDateTime pattern="dd-MM-yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column styleClass="centered-column small-column">
+                            <f:facet name="header">Fecha Hasta</f:facet>
+                            <h:outputText value="#{agenda.fechaHastaAgenda}">
+                                <f:convertDateTime pattern="dd-MM-yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column styleClass="consultor-column">
+                            <f:facet name="header">Consultores</f:facet>
+                            <p:dataTable value="#{agenda.dtoConsultorAgenda}" var="consultor">   
+                                <p:column style="width: 80px;">
+                                    <f:facet name="header">Legajo</f:facet>
+                                    <h:outputText value="#{consultor.legajoConsultor}" />
+                                </p:column>
+                                
+                                <p:column>
+                                    <f:facet name="header">Nombre y Apellido</f:facet>
+                                    <h:outputText value="#{consultor.nombreApellidoConsultor}" />
+                                </p:column>                             
+                                <p:column style="width: 150px; text-align: center;">
+                                    <f:facet name="header">Eliminar de Agenda</f:facet>
+                                    <p:commandButton value="Eliminar" 
+                                                     actionListener="#{uiConfigurarAgenda.bajaConsultorDeAgenda(agenda.anio, agenda.semana, consultor.legajoConsultor)}"
+                                                     update="@form"  
+                                                     styleClass="small-delete-button"
+                                                     disabled="#{uiConfigurarAgenda.esAgendaPasada(agenda.anio, agenda.semana)}">
+                                        <p:confirm header="Eliminar Consultor" 
+                                                   message="¿Desea eliminar a #{consultor.nombreApellidoConsultor} - #{consultor.legajoConsultor} de la agenda?" icon="ui-icon-alert">     
+                                        </p:confirm>    
+                                    </p:commandButton>
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" styleClass="box-solid box-danger">
+                                        <p:commandButton value="Si" type="button" styleClass="btn-material btn-primary ui-confirmdialog-yes" 
+                                                         icon="fa fa-check" update="@form:grid1"/>
+                                        <p:commandButton value="No" type="button" styleClass="btn-material btn-danger ui-confirmdialog-no" 
+                                                         icon="fa fa-close" update="@form:grid1"/>
+                                    </p:confirmDialog>
+                                </p:column>
+                            </p:dataTable>
+                        </p:column>       
+
+                        <p:column styleClass="centered-column small-column">
+                            <f:facet name="header">Acciones</f:facet>
+                            <p:commandButton value="Agregar Consultor" styleClass="btn-info" 
+                                             action="#{uiConfigurarAgenda.irAgregarConsultorAgenda(agenda.anio, agenda.semana)}"
+                                             disabled="#{uiConfigurarAgenda.esAgendaPasada(agenda.anio, agenda.semana)}" />
+                        </p:column>                        
+                    </p:dataTable>
+                </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <!-- Metadatos adicionales, si es necesario -->
+        </f:metadata>
+        <ui:param name="renderFormAsterisks" value="true"/>
+    </ui:define>
+
+    <ui:define name="title">
+        Nuevo Tipo Trámite
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form id="form" prependId="false">
+            <p:panel styleClass="box-primary card">
+                <div class="ui-g ui-fluid">
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel for="codTipoTramite" value="Código del Tipo de Trámite:" />
+                        </div>
+                        <div class="ui-sm-12 ui-g-11">
+                         <p:inputText id="codTipoTramite" value="#{AbmAltaTT.codTipoTramite}" 
+             style="width: 150px;" disabled="#{!AbmAltaTT.insert}">
+</p:inputText>
+                            <p:message id="codTipoTramiteMSG" for="codTipoTramite"/>
+                        </div>
+                    </div>
+
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel for="nombreTipoTramite" value="Nombre del Tipo de Trámite:" />
+                        </div>
+                        <div class="ui-sm-12 ui-g-11"> 
+                            <p:inputText id="nombreTipoTramite" value="#{AbmAltaTT.nombreTipoTramite}" style="width: 150px;" disabled="#{!AbmAltaTT.insert}" />
+                        </div>
+                    </div>
+
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel for="descripcionTipoTramite" value="Descripción:" />
+                        </div>
+                        <div class="ui-sm-12 ui-g-11"> 
+                            <p:inputTextarea id="descripcionTipoTramite" value="#{AbmAltaTT.descripcionTipoTramite}" style="width: 150px;" disabled="#{!AbmAltaTT.insert}" 
+                                             rows="3" cols="20"/>
+                        </div>
+                    </div>
+
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel for="descripcionTipoTramiteWeb" value="Descripción (Web):" />
+                        </div>
+                        <div class="ui-sm-12 ui-g-11"> 
+                            <p:inputTextarea id="descripcionTipoTramiteWeb" value="#{AbmAltaTT.descripcionTipoTramiteWeb}" style="width: 150px;" disabled="#{!AbmAltaTT.insert}"
+                                             rows="3" cols="20"/>
+                        </div>
+                    </div>
+
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel for="maxDiaEntrega" value="Máximo Días de Entrega:" />
+                        </div>
+                        <div class="ui-sm-12 ui-g-11"> 
+                            <p:inputText id="maxDiaEntrega" value="#{AbmAltaTT.maxDiaEntrega}" style="width: 150px;" disabled="#{!AbmAltaTT.insert}"/>
+                        </div>
+                    </div>
+
+                    <!-- SelectOneMenu para categorías -->
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel for="categoriaTramite" value="Categoría del Trámite:" />
+                        </div>
+                        <div class="ui-sm-12 ui-g-11"> 
+                            <p:selectOneMenu id="categoriaTramite" value="#{AbmAltaTT.categoriaTramite}">
+                                <f:selectItem itemLabel="Seleccione" itemValue="#{null}" />
+                                <f:selectItems value="#{AbmAltaTT.categoriasPosibles}" var="cat"
+                                               itemLabel="#{cat.nombreCategoriaTramite}" itemValue="#{cat.nombreCategoriaTramite}" />
+                            </p:selectOneMenu>
+                            <p:message id="categoriaTramiteMSG" for="categoriaTramite"/>
+                        </div>
+                    </div>
+                    
+                    <!-- SelectManyCheckbox para la Documentación -->
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+    <div class="ui-sm-12 ui-g-11">
+        <p:outputLabel for="documentacionAlta" value="Documentación del Trámite:" />
+    </div>
+    <div class="ui-sm-12 ui-g-11"> 
+        <p:selectCheckboxMenu id="documentacionAlta" value="#{AbmAltaTT.documentacionesSeleccionadas}" label="Seleccione Documentación" multiple="true">
+            <f:selectItems value="#{AbmAltaTT.documentacionesPosibles}" var="doc" 
+                           itemLabel="#{doc.nombreDocumentacion}" itemValue="#{doc.nombreDocumentacion}" />
+        </p:selectCheckboxMenu>
+        <p:message id="documentacionAltaMSG" for="documentacionAlta"/>
+    </div>
+</div>
+
+
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        <div class="ui-sm-12 ui-g-4">
+                            <p:commandButton value="Agregar" action="#{AbmAltaTT.darDeAlta()}" 
+                                             icon="fa fa-check" styleClass="btn-primary" />
+                        </div>
+                    </div>   
+                </div>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="#{layoutMB.template}"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:define name="metadata">
+        <ui:param name="title" value="Configurar Agenda"/>
+        <style type="text/css">
+            /* Estilo para todos los botones de PrimeFaces con mayor especificidad */
+            .ui-button, .ui-button.ui-widget {
+                width: 250px !important;  /* Nuevo tamaño de ancho */
+                height: 60px !important;  /* Nuevo tamaño de alto */
+                font-size: 14px !important; /* Ajusta el tamaño del texto según necesites */
+                text-align: center !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                white-space: normal !important; /* Permite que el texto se ajuste en varias líneas si es necesario */
+                border: none !important;
+                outline: none !important;
+                color: #FFF !important;
+                cursor: pointer !important;
+                position: relative !important;
+                z-index: 0 !important;
+                border-radius: 12px !important;
+                background-color: #333 !important; /* Fondo predeterminado de los botones */
+                transition: all 0.3s ease !important; /* Transiciones suaves */
+            }
+
+            /* Efecto Glow */
+            .ui-button.ui-widget::before {
+                content: "";
+                background: linear-gradient(
+                  45deg,
+                  #3c8dbc, #FFFFFF, #3c8dbc, #FFFFFF
+                );
+                position: absolute;
+                top: -2px;
+                left: -2px;
+                background-size: 600%;
+                z-index: -1;
+                width: calc(100% + 4px);
+                height:  calc(100% + 4px);
+                filter: blur(8px);
+                animation: glowing 20s linear infinite;
+                transition: opacity .3s ease-in-out;
+                border-radius: 10px;
+                opacity: 0;
+            }
+
+            /* Animación de Glow */
+            @keyframes glowing {
+                0% {background-position: 0 0;}
+                50% {background-position: 400% 0;}
+                100% {background-position: 0 0;}
+            }
+
+            /* Efecto hover */
+            .ui-button.ui-widget:hover::before {
+                opacity: 1;
+            }
+
+            /* Efecto active */
+            .ui-button.ui-widget:active::after {
+                background: transparent;
+            }
+
+            .ui-button.ui-widget:active {
+                color: #000;
+                font-weight: bold;
+            }
+
+            /* Estilo adicional para el contorno de los botones cuando se hace clic */
+            .ui-button.ui-widget::after {
+                content: "";
+                z-index: -1;
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-color: #333;
+                left: 0;
+                top: 0;
+                border-radius: 10px;
+            }
+
+            /* Opcional: Efectos de sombra o bordes adicionales si se necesitan */
+            .ui-button.ui-widget:hover {
+                box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+            }
+
+            /* Estilo para el contenedor principal de todos los botones */
+            .button-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                align-items: center;
+                height: 100%; /* Ajusta la altura según lo necesites */
+                padding-top: 20px; /* Añadido para separar un poco los botones de la parte superior */
+            }
+
+            /* Estilo para cada div interno que contiene tres botones */
+            .button-row {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                width: 100%; /* Asegura que ocupe todo el ancho disponible */
+                margin-bottom: 60px; /* Aumentado para más separación entre filas */
+            }
+        </style>
+    </ui:define>
+    
+    <ui:define name="title">
+        <h:form>
+            <h2 class="align-center">
+                Los Imaginadores - <span class="text-black"> <i><a href="https://github.com/adminfaces/admin-starter"
+                                                              target="_blank"
+                                                              style="text-transform: none;text-decoration: none">Gestion de Tramites</a></i></span>
+                <br/>
+                <small>Disenio de Sistemas</small>
+            </h2>
+            <div class="button-container">
+                <div class="button-row">
+                    <p:commandButton value="Configurar Agenda" icon="pi pi-calendar-plus" action="#{holaUI.irConfigurarAgenda}" ajax="false" />
+                    <p:commandButton value="Cargar Trámite" icon="pi pi-plus-circle" action="#{holaUI.irMostrarTramitesLista}" ajax="false" />
+                    <p:commandButton value="Solicitar Tramite WEB" icon="pi pi-desktop" action="#{holaUI.irSolicitarTramiteWeb}" ajax="false" />
+                </div>
+
+                <div class="button-row">
+                    <p:commandButton value="Documentación" icon="pi pi-id-card" action="#{holaUI.irABMDocumentacionLista}" ajax="false" />
+                    <p:commandButton value="Clientes" icon="pi pi-users" action="#{holaUI.irListaClientes}" ajax="false" />
+                    <p:commandButton value="Consultores" icon="pi pi-users" action="#{holaUI.irABMConsultorLista}" ajax="false" />
+                </div>
+
+                <div class="button-row">
+                    <p:commandButton value="Lista de Precios" icon="pi pi-dollar" action="#{holaUI.irActualizarLP}" ajax="false" />
+                    <p:commandButton value="Configurar Estado Tramite" icon="pi pi-cog" action="#{holaUI.irABMEstadoTramiteLista}" ajax="false" />
+                    <p:commandButton value="Configurar Versiones" icon="pi pi-sitemap" action="#{holaUI.irConfigurarVersiones}" ajax="false" />
+                </div>
+
+                <div class="button-row">
+                    <p:commandButton value="Configurar Categoria" icon="pi pi-tags" action="#{holaUI.irABMCategoriaTramiteLista}" ajax="false" />
+                    <p:commandButton value="Configurar TipoTramite" icon="pi pi-cog" action="#{holaUI.irABMTipoTramiteLista}" ajax="false" />
+                    <p:commandButton value="Cambiar Estado" icon="pi pi-history" action="#{holaUI.irTramitesConsultor}" ajax="false" />
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

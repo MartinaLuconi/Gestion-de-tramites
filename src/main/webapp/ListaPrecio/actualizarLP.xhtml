@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+    <ui:define name="metadata">
+        <ui:param name="title" value="Trabajar con Listas de Precio"/>
+
+        <style type="text/css">
+            .ui-datatable .ui-datatable-header {
+                text-align: right !important;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="description">
+        Trabajar con Listas de Precio
+    </ui:define>
+
+    <ui:define name="body">
+        <p:growl id="globalMessages" life="6000" sticky="true"/>
+        <adm:breadcrumb title="Upload"/>
+
+        <h:form id="form">
+            <div class="box box-primary">
+                <div class="box-header with-border">                    
+                    <div id="main-buttons">
+                        <p:commandButton id="botonAccion" value="Importar" action="#{uiActualizarLP.irAImportar()}" icon="fa fa-plus" styleClass="btn-primary" update="globalMessages"/>
+                    </div>                    
+                </div>
+                <p:separator/>
+
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-md-3">
+                        <p:outputPanel>                            
+                            <p:datePicker id="fechaFilter" 
+                                          value="#{uiActualizarLP.fechaActual}" 
+                                          pattern="dd/MM/yyyy"
+                                          placeholder="Selecciona una fecha" 
+                                          showTime="true"
+                                          appendTo="@(body)">
+                                <p:ajax event="dateSelect"
+                                        listener="#{uiActualizarLP.filtrar()}" 
+                                        update="@form:grid1" />
+                            </p:datePicker>
+                        </p:outputPanel>
+                    </div>
+                </div>
+
+                <p:dataTable id="grid1" widgetVar="listaPrecioTable" value="#{uiActualizarLP.obtenerListaPrecio()}" var="listaPrecio">
+
+                    <p:column style="text-align: center;">
+                        <f:facet name="header">Código</f:facet>
+                        <h:outputText value="#{listaPrecio.codListaPrecio}"/>
+                    </p:column>
+
+                    <p:column style="text-align: center;">
+                        <f:facet name="header">Fecha Desde</f:facet>
+                        <h:outputText value="#{listaPrecio.fechaHoraDesdeListaPrecio}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Buenos_Aires"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column style="text-align: center;">
+                        <f:facet name="header">Fecha Hasta</f:facet>
+                        <h:outputText value="#{listaPrecio.fechaHoraHastaListaPrecio}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Buenos_Aires"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column style="text-align: center;">
+                        <f:facet name="header">Fecha Baja</f:facet>
+                        <h:outputText value="#{listaPrecio.fechaHoraBajaListaPrecio}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Buenos_Aires"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column style="width: 30%; text-align: center;">
+                        <f:facet name="header">Acciones</f:facet>
+                        <div>
+
+                            <p:commandButton value="Exportar" 
+                                             actionListener="#{uiActualizarLP.setCodListaPrecio(listaPrecio.codListaPrecio)}"
+                                             ajax="false" 
+                                             icon="pi pi-arrow-down"  
+                                             styleClass="btn-success"
+                                             onstart="PrimeFaces.monitorDownload(start, stop)">
+                                <p:fileDownload value="#{uiActualizarLP.fileD}" />
+                            </p:commandButton>
+
+                            <p:commandButton value="Dar de Baja" 
+                                             actionListener="#{uiActualizarLP.setCodListaPrecio(listaPrecio.codListaPrecio)}"
+                                             update="@form"
+                                             icon="pi pi-ban" 
+                                             styleClass="btn-danger"
+                                             oncomplete="PF('confirmBaja').show()"
+                                             rendered="#{listaPrecio.fechaHoraBajaListaPrecio == null}" />
+                        </div>
+                    </p:column>
+                </p:dataTable>
+
+                <!-- Confirmación de la baja -->
+                <p:confirmDialog header="Confirmar" message="¿Desea dar de baja esta lista de precios?"
+                                 showEffect="fade" hideEffect="fade" widgetVar="confirmBaja">
+                    <p:commandButton value="Sí" action="#{uiActualizarLP.darDeBajaListaPrecio()}" update="@form" icon="pi pi-check" />
+                    <p:commandButton value="No" onclick="PF('confirmBaja').hide()" type="button" icon="pi pi-times" />
+                </p:confirmDialog>
+            </div>
+        </h:form>
+
+        <!-- Script para desenfocar el campo de fecha al cargar la página -->
+        <h:outputScript>
+            $(document).ready(function() {
+            $('#form\\:fechaFilter_input').blur();
+            });
+        </h:outputScript>
+
+    </ui:define>
+</ui:composition>
+
+<!--<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{layoutMB.template}">
+    <ui:define name="metadata">
+        <ui:param name="title" value="Listas de Precios"/> 
+    </ui:define>
+
+    <ui:define name="description">
+        Trabajar con Listas de Precios
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form>
+            <p:focus context="@form"/>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div id="main-buttons">
+                        <p:commandButton value="Importar"  icon="fa fa-plus" action="#{uiActualizarLP.irAImportar()}" styleClass="btn-primary"/>
+                    </div>
+                </div>
+                Tabla para mostrar la lista de precios 
+                <p:separator/>
+
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-md-6">
+                        <p:outputPanel>
+                            <h:outputText value=""/>
+                            <p:datePicker id="fechaFilter" 
+                                        value="#{uiActualizarLP.fechaDesde}" 
+                                        pattern="dd/MM/yyyy"
+                                        placeholder="Selecciona una fecha" 
+                                        onfocus="Javascript:this.focus();this.select();" showTime="true">
+                                <p:ajax event="dateSelect"
+                                        listener="#{uiActualizarLP.filtrar()}" 
+                                        update="@form:grid1" />
+                            </p:datePicker>
+                        </p:outputPanel>
+                    </div> 
+                    <p:dataTable id="grid1" widgetVar="listaPrecioTable" value="#{uiActualizarLP.obtenerListaPrecio()}" var="listaPrecio" lazy="true">
+
+                        Columna: nroConfiguración 
+                        <p:column>
+                            <f:facet name="header">Código</f:facet>
+#{listaPrecio.codListaPrecio}
+</p:column>
+
+Columna: Fecha Desde 
+<p:column>
+<f:facet name="header">Fecha Desde</f:facet>
+#{listaprecio.fechaHoraDesdeListaPrecio}
+</p:column>
+
+Columna: Fecha Hasta 
+<p:column>
+<f:facet name="header">Fecha Hasta</f:facet>
+#{listaprecio.fechaHoraHastaListaPrecio}
+</p:column>
+
+Columna: Acciones 
+<p:column>
+<f:facet name="header">Acciones</f:facet>
+Botón para exportar a Excel 
+<p:commandButton value="Exportar" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);"
+             icon="pi pi-arrow-down"  styleClass="btn-success">
+<p:fileDownload value="#{uiExcelFile.fileD}"/> 
+</p:commandButton>
+</p:column>
+
+</p:dataTable>
+</div> 
+
+</div> 
+</h:form>
+
+</ui:define>
+</ui:composition>-->

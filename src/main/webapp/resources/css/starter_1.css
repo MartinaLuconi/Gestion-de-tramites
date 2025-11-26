@@ -1,0 +1,77 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa; /* Color de fondo suave */
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    color: #343a40; /* Color oscuro para el título */
+    text-align: center;
+}
+
+.box {
+    background-color: #ffffff; /* Fondo blanco */
+    border-radius: 5px; /* Bordes redondeados */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    padding: 20px;
+    margin: 20px 0; /* Espacio superior e inferior */
+}
+
+.custom-field {
+    margin-bottom: 15px; /* Espacio entre campos */
+}
+
+.custom-label {
+    font-weight: bold; /* Negrita para las etiquetas */
+    color: #495057; /* Color del texto de la etiqueta */
+}
+
+.custom-text {
+    display: block; /* Asegura que el texto esté en una nueva línea */
+    margin-top: 5px; /* Espacio superior entre la etiqueta y el texto */
+    color: #6c757d; /* Color gris para el texto */
+}
+
+.completarDocumentacion-table {
+    width: 100%; /* Ancho completo */
+    border-collapse: collapse; /* Quita espacios entre bordes */
+}
+
+.completarDocumentacion-table th,
+.completarDocumentacion-table td {
+    border: 5px solid #dee2e6; /* Borde de las celdas */
+    padding: 8px; /* Espacio dentro de las celdas */
+    text-align: center
+}
+
+.completarDocumentacion-table th {
+    background-color: #f1f1f1; /* Color de fondo para encabezados */
+    color: #343a40; /* Color de texto de los encabezados */
+}
+
+.completarDocumentacion-table tr:nth-child(even) {
+    background-color: #f8f9fa; /* Color de fondo alternativo para filas pares */
+}
+
+.separator {
+    margin: 10px 0; /* Espacio superior e inferior para el separador */
+}
+
+.p-commandButton {
+    background-color: #007bff; /* Color azul */
+    color: white; /* Texto blanco */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 10px 15px; /* Espaciado interno */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+}
+
+.p-commandButton:hover {
+    background-color: #0056b3; /* Color azul más oscuro al pasar el mouse */
+}
+
+.ui-sm-12 {
+    text-align: center; /* Centra el contenido */
+    margin-top: 20px; /* Espacio superior */
+}

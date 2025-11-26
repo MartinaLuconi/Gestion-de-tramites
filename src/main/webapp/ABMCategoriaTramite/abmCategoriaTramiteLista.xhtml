@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+    <ui:define name="metadata">
+        <ui:param name="title" value="Trabajar con Categoría"/> <!-- Automatic create breadCrumb and page title when param 'title' is provided. --> 
+        
+        <style type="text/css">
+            .ui-datatable .ui-datatable-header {
+                text-align: right !important;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="description">
+        ABM Categoría Tramite
+    </ui:define>
+
+    <ui:define name="body">
+    <h:form>
+        <p:focus context="@form"/>
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <div id="main-buttons">
+                    <p:commandButton value="Agregar Categoría" icon="fa fa-plus" action="#{uiabmCategoriaTramiteLista.irAgregarCategoria()}" styleClass="btn-primary"/>
+                </div>
+            </div>
+
+            <p:separator/>
+
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-md-6">
+                    <p:outputPanel>
+                        <h:outputText value="Código:"/>
+                        <p:spacer height="10"/>
+                        <p:inputText id="codCategoriaFiltro" style="width:150px" value="#{uiabmCategoriaTramiteLista.codCategoriaTramiteFiltro}">
+                            <p:ajax event="keyup" listener="#{uiabmCategoriaTramiteLista.filtrar()}" update="@form:grid1"/>
+                        </p:inputText>
+                    </p:outputPanel>
+                </div>
+
+                <div class="ui-g-12 ui-md-6">
+                    <p:outputPanel>
+                        <h:outputText value="Nombre:"/>
+                        <p:spacer height="10"/>
+                        <p:inputText id="nombreFiltro" style="width:150px" value="#{uiabmCategoriaTramiteLista.nombreCategoriaTramiteFiltro}">
+                            <p:ajax event="keyup" listener="#{uiabmCategoriaTramiteLista.filtrar()}" update="@form:grid1"/>
+                        </p:inputText>
+                    </p:outputPanel>
+                </div>
+            </div>
+
+            <p:spacer height="5"/>
+
+            <p:dataTable id="grid1" widgetVar="categoriaTable" value="#{uiabmCategoriaTramiteLista.buscarCategorias()}" var="categoria">
+                <p:column>
+                    <f:facet name="header">Código</f:facet>
+                    #{categoria.codCategoriaTramite}
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">Nombre</f:facet>
+                    #{categoria.nombreCategoriaTramite}
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">Acciones</f:facet>
+                    <p:commandButton value="Modificar" styleClass="btn-info" action="#{uiabmCategoriaTramiteLista.irModificarCategoria(categoria.codCategoriaTramite)}" disabled="#{categoria.fechaHoraBajaCategoriaTramite !=null}">
+                        <f:ajax render="@form"/>
+                    </p:commandButton>
+                    <p:spacer width="5"/>
+                    <p:commandButton value="Eliminar" styleClass="btn-danger" 
+                                     actionListener="#{uiabmCategoriaTramiteLista.darDeBajaCategoria(categoria.codCategoriaTramite)}" 
+                                     disabled="#{categoria.fechaHoraBajaCategoriaTramite !=null}" update="@form:grid1">
+                        <p:confirm header="Anulación de #{categoria.codCategoriaTramite} #{categoria.nombreCategoriaTramite}" 
+                                   message="¿Está seguro?" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" styleClass="box-solid box-danger">
+                        <p:commandButton value="Si" type="button" styleClass="btn-material btn-primary ui-confirmdialog-yes" 
+                                         icon="fa fa-check" update="@form:grid1"/>
+                        <p:commandButton value="No" type="button" styleClass="btn-material btn-danger ui-confirmdialog-no" 
+                                         icon="fa fa-close" update="@form:grid1"/>
+                    </p:confirmDialog>
+                </p:column>
+
+            </p:dataTable>
+        </div>
+    </h:form>
+    </ui:define>
+</ui:composition>

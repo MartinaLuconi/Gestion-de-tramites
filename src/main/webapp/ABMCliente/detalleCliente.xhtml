@@ -1,0 +1,112 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+    <ui:define name="metadata">
+        <ui:param name="title" value="Detalle del Cliente"/> <!-- Automatic create breadCrumb and page title when param 'title' is provided. --> 
+        
+        <style type="text/css">
+            .ui-datatable .ui-datatable-header {
+                text-align: right !important;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="description">
+        Datos del Cliente: #{uiDetalleCliente.nombreApellidoCliente}
+    </ui:define>
+
+    <ui:define name="body">
+    <h:form id="form" prependId="false">
+        <p:messages id="mensajes" showDetail="true" showSummary="true" />
+       
+        <p:panel styleClass="box box-primary card">
+           <div class="ui-g ui-fluid">
+               
+                <!-- Campo para NOMBRE Y APELLIDO --> 
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        <div class="ui-sm-12 ui-g-11">              
+                          <p:outputLabel for="nombre" value="Nombre y Apellido:" />
+                        </div>
+                
+                        <div class="ui-sm-12 ui-g-11"> 
+                            <p:inputText id="nombre" value="#{uiDetalleCliente.nombreApellidoCliente}" required="true" label="Nombre y Apellido:"/>
+                            <p:message for="nombre" display="icon" />
+                        </div>
+                    </div>
+                
+             <!-- Campo para CUIT -->
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel for="cuit"  value="CUIT:" />
+                        </div>
+                
+                        <div class="ui-sm-12 ui-g-11"> 
+                        <p:inputText id="cuit" value="#{uiDetalleCliente.cuitCliente}" required="true" label="CUIT:" disabled="#{!uiDetalleCliente.insert}" maxlength="11"  
+                                     requiredMessage="El CUIT es obligatorio." 
+                                     />
+                        <p:message for="cuit" display="icon" /> 
+                        </div>
+                    </div>
+             
+          <!-- Campo para DIRECCION -->
+          
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                       <div class="ui-sm-12 ui-g-11">
+                          <p:outputLabel for="direccion" value="Dirección:" />
+                       </div>
+                    <div class="ui-sm-12 ui-g-11"> 
+                         <p:inputText id="direccion" value="#{uiDetalleCliente.direccion}" required="true" label="Dirección:"/>
+                         <p:message for="direccion" display="icon" />
+                    </div>
+                    </div>
+          
+          <!-- Campo para MAIL -->
+          
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        <div class="ui-sm-12 ui-g-11">
+                            <p:outputLabel for="mail"  value="Mail:" />
+                        </div>
+                    <div class="ui-sm-12 ui-g-11"> 
+                         <p:inputText id="mail" value="#{uiDetalleCliente.mailCliente}" required="true" label="Mail:"/>
+                         <p:message for="mail" display="icon" />
+                    </div>
+                    </div>
+          <!-- Campo para TELEFONO -->
+          
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        <div class="ui-sm-12 ui-g-11">
+                          <p:outputLabel for="telefono" value="Teléfono:" />
+                        </div>
+                    <div class="ui-sm-12 ui-g-11"> 
+                        <p:inputText id="telefono" value="#{uiDetalleCliente.telefonoCliente}" />
+                    </div>
+                    </div>
+           
+                   
+                   
+                       
+            
+<!-- BOTONES -->
+                     <div class="box-header with-border">
+                         <div id="main-buttons">
+
+                             <p:commandButton value="Guardar Cambios"  action="#{uiDetalleCliente.agregarCliente()}"   update="form mensajes" icon="fa fa-check" styleClass="btn-primary"/>
+                         </div>
+                      </div>
+                
+                  <div class="box-header with-border">
+                         <div id="main-buttons">
+
+                             <p:commandButton value="Cancelar" action="#{uiDetalleCliente.irListaCliente()}" immediate="true" process="@this" styleClass="btn-primary"/>
+                         </div>
+                   </div>
+                
+  
+            </div>
+        </p:panel>
+   </h:form>
+
+ </ui:define>
+    </ui:composition>

@@ -1,0 +1,89 @@
+.sidebar-form {
+    border-radius: 3px;
+    border: 1px solid #374850;
+    margin: 10px 10px;
+}
+.sidebar-form, .sidebar-menu>li.header {
+    overflow: hidden;
+    text-overflow: clip;
+}
+
+#userImage {
+    float: left;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 10px;
+    margin-top: -2px;
+}
+
+ul.dropdown-menu > li.user-header {
+    height: auto!important;
+}
+
+a.dropdown-toggle {
+    background-color: #3c8dbc!important;
+}
+
+a#logout {
+    color: #3c8dbc!important;
+    background: transparent;
+}
+
+@media (max-width: 768px) {
+    body .control-sidebar {
+        padding-top:100px;
+    }
+}
+
+/* styles.css */
+/* Para ocultar las líneas de los paneles y separadores */
+.ui-panel, .ui-separator {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Para darle un estilo a las etiquetas */
+.custom-label {
+    font-weight: bold;
+    font-size: 1.3em; /* Ajusta según prefieras */
+    margin-top: 15px; /* Espacio entre etiquetas */
+    color: #374850; /* Color del texto */
+}
+
+/* Para el contenido de los textos */
+.custom-text {
+    font-size: 1.1em; /* Tamaño de fuente */
+    color: #555; /* Color del texto */
+    margin-bottom: 10px; /* Espacio debajo del texto */
+    margin-top: 5px; /* Espacio arriba del texto para separar del label */
+}
+
+/* Para el contenedor principal */
+.box {
+    background-color: #ffffff; /* Color de fondo blanco */
+    padding: 20px; /* Espaciado interno */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+/* Para botones */
+.ui-button-primary {
+    background-color: #007bff; /* Color de fondo del botón */
+    color: white; /* Color del texto del botón */
+    border-radius: 5px; /* Bordes redondeados para los botones */
+    padding: 10px 15px; /* Espaciado interno del botón */
+    border: none; /* Sin bordes */
+}
+
+/* Para la separación entre elementos */
+p.separator {
+    margin: 8px 0; /* Espacio entre los elementos */
+}
+
+/* Estilos adicionales para mejorar la presentación */
+h:outputText {
+    display: block; /* Asegúrate de que cada texto se muestre en su propia línea */
+    margin: 5px 0; /* Espacio entre líneas de texto */
+}
+

@@ -1,0 +1,35 @@
+.custom-label {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 50px;
+    font-family: Georgia;
+    text-decoration: underline;
+}
+
+.custom-text {
+    font-size: 14px;
+    color: #333;
+}
+
+.separator {
+    margin-bottom: 15px;
+}
+
+.box {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    background-color: #f9f9f9;
+}
+
+h:panelGroup {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+
+.completarDocumentacion-table {
+    margin-top: 45px;
+}

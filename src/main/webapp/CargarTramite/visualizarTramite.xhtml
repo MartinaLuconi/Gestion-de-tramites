@@ -1,0 +1,133 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="nroTramite" value="#{uivisualizarTramite.nroTramite}" />
+            <f:event listener="#{uivisualizarTramite.visualizarTramite}" type="preRenderView" />
+        </f:metadata>
+        <ui:param name="renderFormAsterisks" value="true" />
+    </ui:define>
+
+    <ui:define name="title">
+        Datos del Trámite
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form id="form" prependId="false">
+            <p:panel styleClass="box-primary card">
+                <div class="ui-g ui-fluid">
+
+                    <!-- Número de Trámite -->
+                    <div class="ui-sm-12 ui-md-6 ui-g-nopad">
+                        <div class="ui-sm-12 ui-md-11">
+                            <p:outputLabel for="nroTramite" value="Número de Trámite:" />
+                        </div>
+                        <div class="ui-sm-12 ui-md-11">
+                            <h:outputText id="nroTramite" value="#{uivisualizarTramite.grilla.nroTramite}" />
+                        </div>
+                    </div>
+
+                    <!-- Nombre del Tipo Trámite -->
+                    <div class="ui-sm-12 ui-md-6 ui-g-nopad">
+                        <div class="ui-sm-12 ui-md-11">
+                            <p:outputLabel for="nombreTipoTramite" value="Nombre del Tipo Trámite:" />
+                        </div>
+                        <div class="ui-sm-12 ui-md-11">
+                            <h:outputText id="nombreTipoTramite" value="#{uivisualizarTramite.grilla.nombreTipoTramite}" />
+                        </div>
+                    </div>
+
+                    <!-- Estado del Trámite -->
+                    <div class="ui-sm-12 ui-md-6 ui-g-nopad">
+                        <div class="ui-sm-12 ui-md-11">
+                            <p:outputLabel for="estadoTramite" value="Estado del Trámite:" />
+                        </div>
+                        <div class="ui-sm-12 ui-md-11">
+                            <h:outputText id="estadoTramite" value="#{uivisualizarTramite.grilla.nombreEstadoTramite}" />
+                        </div>
+                    </div>
+
+                    <!-- Cliente -->
+                    <div class="ui-sm-12 ui-md-6 ui-g-nopad">
+                        <div class="ui-sm-12 ui-md-11">
+                            <p:outputLabel for="cliente" value="Cliente:" />
+                        </div>
+                        <div class="ui-sm-12 ui-md-11">
+                            <h:outputText id="cliente" value="#{uivisualizarTramite.grilla.nombreCliente}" />
+                        </div>
+                    </div>
+
+                    <!-- CUIT del Cliente -->
+                    <div class="ui-sm-12 ui-md-6 ui-g-nopad">
+                        <div class="ui-sm-12 ui-md-11">
+                            <p:outputLabel for="cuitCliente" value="CUIT del Cliente:" />
+                        </div>
+                        <div class="ui-sm-12 ui-md-11">
+                            <h:outputText id="cuitCliente" value="#{uivisualizarTramite.grilla.cuitCliente}" />
+                        </div>
+                    </div>
+
+                    <!-- Dirección del Cliente -->
+                    <div class="ui-sm-12 ui-md-6 ui-g-nopad">
+                        <div class="ui-sm-12 ui-md-11">
+                            <p:outputLabel for="direccionCliente" value="Dirección del Cliente:" />
+                        </div>
+                        <div class="ui-sm-12 ui-md-11">
+                            <h:outputText id="direccionCliente" value="#{uivisualizarTramite.grilla.direccion}" />
+                        </div>
+                    </div>
+
+                    <!-- Precio del Trámite -->
+                    <div class="ui-sm-12 ui-md-6 ui-g-nopad">
+                        <div class="ui-sm-12 ui-md-11">
+                            <p:outputLabel for="precioTramite" value="Precio del Trámite:" />
+                        </div>
+                        <div class="ui-sm-12 ui-md-11">
+                            <h:outputText id="precioTramite" value="#{uivisualizarTramite.grilla.precioTramite}" />
+                        </div>
+                    </div>
+
+                    <!-- Fecha Fin Documentación -->
+                    <div class="ui-sm-12 ui-md-6 ui-g-nopad">
+                        <div class="ui-sm-12 ui-md-11">
+                            <p:outputLabel for="fechaFinDoc" value="Fecha Fin Documentación:" />
+                        </div>
+                        <div class="ui-sm-12 ui-md-11">
+                            <h:outputText id="fechaFinDoc" value="#{uivisualizarTramite.grilla.fechaHoraFinEntregaDoc}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                            </h:outputText>
+                        </div>
+                    </div>
+
+                    <!-- Documentación -->
+                    <p:dataTable id="documentacionTable" value="#{uivisualizarTramite.grilla.documentacionesDTO}" var="doc">
+                        <p:column headerText="Nombre Documentación">
+                            <h:outputText value="#{doc.nombreDocumentacion}" />
+                        </p:column>
+                        <p:column headerText="Fecha de Entrega">
+                            <h:outputText value="#{doc.fechaHoraEntrega}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </p:panel>
+
+            <div class="ui-sm-12 ui-g-4" style="text-align: left;">
+                <p:commandButton value="Atrás" action="#{uicargarTramite.cancelar()}" process="@this" />
+            </div>
+            
+            <div class="ui-sm-12 ui-g-nopad">
+                        <p:commandButton title="Completar Documentación" 
+                                         action="#{uivisualizarTramite.irACompletarDocumentacion(uivisualizarTramite.nroTramite)}"
+                                         styleClass="btn-primary" process="@this" />
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="entidades.TramiteDocumentacion" table="tramiteDocumentacion">
+
+        <id name="OID" type="string">
+            <column name="OIDTramiteDocumentacion"/>
+            <generator class="uuid2"/>
+        </id>
+
+        <property name="codTramiteDocumentacion" type="int">
+            <column name="codTramiteDocumentacion"/>
+        </property>
+        
+        <property name="archivo" type="binary">
+            <column name="archivo" sql-type="LONGBLOB" />
+        </property>
+        
+        
+        <property name="nombreArchivo" type="string">
+            <column name="nombreArchivo"/>
+        </property>            
+                
+        
+        <property name="fechaHoraEntrega" column="fechaHoraEntrega" type="timestamp"/>
+        
+        <many-to-one name="documentacion" class="entidades.Documentacion" column="OIDDocumentacion" not-null="true"/>
+       
+    </class>
+    
+</hibernate-mapping>

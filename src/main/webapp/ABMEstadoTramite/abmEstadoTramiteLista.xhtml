@@ -1,0 +1,107 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+    
+    <ui:define name="metadata">
+        <ui:param name="title" value="Trabajar con Estado"/> 
+        <style type="text/css">
+            .ui-datatable .ui-datatable-header {
+                text-align: right !important;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="description">
+        ABM Estado de Trámite
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form>
+            <p:focus context="@form"/>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div id="main-buttons">
+                        <p:commandButton value="Agregar Estado" icon="fa fa-plus" action="#{uiabmEstadoTramiteLista.irAgregarEstado()}" styleClass="btn-primary"/>
+                    </div>
+                </div>
+
+                <p:separator/>
+
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-md-6">
+                        <p:outputPanel>
+                            <h:outputText value="Código:"/>
+                            <p:spacer height="10"/>
+                            <p:inputText id="codEstadoTramiteFiltro" style="width:150px" value="#{uiabmEstadoTramiteLista.codEstadoTramiteFiltro}">
+                                <p:ajax event="keyup" listener="#{uiabmEstadoTramiteLista.filtrar()}" update="@form:grid1"/>
+                            </p:inputText>
+                        </p:outputPanel>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-6">
+                        <p:outputPanel>
+                            <h:outputText value="Nombre:"/>
+                            <p:spacer height="10"/>
+                            <p:inputText id="nombreTramiteFiltro" style="width:150px" value="#{uiabmEstadoTramiteLista.nombreEstadoTramiteFiltro}">
+                                <p:ajax event="keyup" listener="#{uiabmEstadoTramiteLista.filtrar()}" update="@form:grid1"/>
+                            </p:inputText>
+                        </p:outputPanel>
+                    </div>
+                </div>
+
+                <p:spacer height="5"/>
+
+                <p:dataTable id="grid1" widgetVar="estadoTable" value="#{uiabmEstadoTramiteLista.buscarEstados()}" var="estado">
+                    <p:column>
+                        <f:facet name="header">Código</f:facet>
+                        #{estado.codEstadoTramite}
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">Nombre</f:facet>
+                        #{estado.nombreEstadoTramite}
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">Acciones</f:facet>
+                        
+                        <!-- Botón Modificar -->
+                        <p:commandButton value="Modificar" styleClass="btn-info" 
+                                         action="#{uiabmEstadoTramiteLista.irModificarEstado(estado.codEstadoTramite)}" 
+                                         disabled="#{estado.fechaHoraBajaEstadoTramite != null or estado.codEstadoTramite == 1}">
+                            <f:ajax render="@form"/>
+                            <p:tooltip for="@this" value="No se pueden realizar acciones con este estado" rendered="#{estado.codEstadoTramite == 1}"/>
+                        </p:commandButton>
+                        
+                        <p:spacer width="5"/>
+                        
+                        <!-- Botón Eliminar -->
+                        <p:commandButton value="Eliminar" styleClass="btn-danger" 
+                                         actionListener="#{uiabmEstadoTramiteLista.darDeBajaEstado(estado.codEstadoTramite)}" 
+                                         disabled="#{estado.fechaHoraBajaEstadoTramite != null or estado.codEstadoTramite == 1}" 
+                                         update="@form:grid1">
+                            <p:confirm header="Anulación de #{estado.codEstadoTramite} #{estado.nombreEstadoTramite}" 
+                                       message="¿Está seguro?" icon="ui-icon-alert"/>
+                            <p:tooltip for="@this" value="No se pueden realizar acciones con este estado" rendered="#{estado.codEstadoTramite == 1}"/>
+                        </p:commandButton>
+                        
+                        <!-- Fila adicional para el mensaje cuando el código es igual a 1 -->
+                        <p:row rendered="#{estado.codEstadoTramite == 1}">
+                            <h:outputText value="No se pueden realizar acciones con este estado." 
+                                          styleClass="ui-messages-error" style="display: block; color: red; font-weight: bold;"/>
+                        </p:row>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" styleClass="box-solid box-danger">
+                            <p:commandButton value="Si" type="button" styleClass="btn-material btn-primary ui-confirmdialog-yes" 
+                                             icon="fa fa-check" update="@form:grid1"/>
+                            <p:commandButton value="No" type="button" styleClass="btn-material btn-danger ui-confirmdialog-no" 
+                                             icon="fa fa-close" update="@form:grid1"/>
+                        </p:confirmDialog>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
